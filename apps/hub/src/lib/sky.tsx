@@ -24,6 +24,10 @@ interface Sky {
   /** The Hub's day, which changes at 4:00 am. */
   today: DayKey;
   weather: DayWeather | null;
+  /** True when the weather is for the fallback place, not where she is. */
+  weatherIsFallback: boolean;
+  /** Ask the browser for her position again. */
+  locate: () => void;
   sun: SunTimes;
   night: boolean;
   palette: Palette;
@@ -40,7 +44,7 @@ export function SkyProvider({ children }: { children: ReactNode }) {
   const now = useNow();
   const timeZone = deviceTimeZone();
   const calendarDate = dayFor(now, timeZone, 0);
-  const fetched = useWeather(calendarDate);
+  const { weather: fetched, fallback, locate } = useWeather(calendarDate);
   // The weather comes on its own place's clock. Put it on this screen's.
   const deviceOffset = -now.getTimezoneOffset() * 60;
   const weather = useMemo(
@@ -59,6 +63,8 @@ export function SkyProvider({ children }: { children: ReactNode }) {
       minutes,
       today: dayFor(now, timeZone),
       weather,
+      weatherIsFallback: fallback,
+      locate,
       sun,
       night: isNight(minutes, sun),
       palette,
@@ -66,7 +72,7 @@ export function SkyProvider({ children }: { children: ReactNode }) {
       glow: (opacity) => css(palette.glow, opacity),
       base: css(palette.base),
     };
-  }, [now, timeZone, weather]);
+  }, [now, timeZone, weather, fallback, locate]);
 
   return <SkyContext.Provider value={value}>{children}</SkyContext.Provider>;
 }

@@ -8,6 +8,7 @@ import {
   habitShortName,
   habitTitleAndNote,
   isDone,
+  mergePending,
   progressLabel,
 } from "./habits";
 
@@ -143,5 +144,28 @@ describe("habitTitleAndNote", () => {
       title: "5 minute stretch",
       note: null,
     });
+  });
+});
+
+describe("mergePending", () => {
+  it("saves this screen's count when nothing else changed", () => {
+    expect(mergePending({ base: 1, count: 4 }, 1)).toBe(4);
+  });
+
+  it("adds offline taps on top of taps made on another screen", () => {
+    // Offline: 1 to 4. Meanwhile the other screen went from 1 to 2.
+    expect(mergePending({ base: 1, count: 4 }, 2)).toBe(5);
+  });
+
+  it("applies an offline subtraction to the newer count", () => {
+    expect(mergePending({ base: 3, count: 2 }, 5)).toBe(4);
+  });
+
+  it("never goes below zero", () => {
+    expect(mergePending({ base: 2, count: 0 }, 1)).toBe(0);
+  });
+
+  it("has nothing to save when the count is already there", () => {
+    expect(mergePending({ base: 1, count: 4 }, 4)).toBeNull();
   });
 });

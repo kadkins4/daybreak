@@ -70,7 +70,7 @@ function RoundButton({
 
 /** The weather, shown inside the Sun Dial. */
 function DialWeather({ scale }: { scale: number }) {
-  const { weather, minutes, night, now } = useSky();
+  const { weather, weatherIsFallback, locate, minutes, night, now } = useSky();
   const moon = useMemo(() => moonPhase(now), [now]);
   const size = (value: number) => Math.round(value * scale);
 
@@ -119,6 +119,25 @@ function DialWeather({ scale }: { scale: number }) {
         Sunrise {formatClock(weather.sunrise)} · Sunset{" "}
         {formatClock(weather.sunset)}
       </Text>
+      {weatherIsFallback ? (
+        <Pressable
+          onPress={locate}
+          accessibilityRole="button"
+          hitSlop={12}
+          style={{ marginTop: size(8) }}
+        >
+          <Text
+            style={{
+              fontFamily: font.medium,
+              fontSize: size(12),
+              color: color.text,
+              textDecorationLine: "underline",
+            }}
+          >
+            Use my location
+          </Text>
+        </Pressable>
+      ) : null}
     </>
   );
 }
@@ -178,15 +197,35 @@ export default function Today() {
     </View>
   );
 
+  // Shown only while taps cannot be sent. It floats over the page, so
+  // nothing moves when it comes and goes.
   const waiting =
     hub.waiting > 0 ? (
-      <Text
+      <View
+        pointerEvents="none"
         accessibilityLiveRegion="polite"
-        style={{ fontFamily: font.regular, fontSize: 13, color: color.muted }}
+        style={{
+          position: "absolute",
+          top: insets.top + 8,
+          left: 0,
+          right: 0,
+          alignItems: "center",
+          zIndex: 10,
+        }}
       >
-        {hub.waiting} {hub.waiting === 1 ? "change" : "changes"} waiting for a
-        connection
-      </Text>
+        <View style={[tile(16), { paddingVertical: 6, paddingHorizontal: 14 }]}>
+          <Text
+            style={{
+              fontFamily: font.regular,
+              fontSize: 13,
+              color: color.muted,
+            }}
+          >
+            Offline. {hub.waiting} {hub.waiting === 1 ? "change" : "changes"}{" "}
+            will send when you reconnect.
+          </Text>
+        </View>
+      </View>
     ) : null;
 
   const manage = (
@@ -235,6 +274,7 @@ export default function Today() {
     return (
       <View style={{ flex: 1 }}>
         <Glow />
+        {waiting}
         <View style={{ flex: 1, padding: 32, gap: 20 }}>
           <View
             style={{
@@ -272,7 +312,6 @@ export default function Today() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
             >
-              {waiting}
               <Text
                 style={{
                   fontFamily: font.regular,
@@ -332,6 +371,7 @@ export default function Today() {
   return (
     <View style={{ flex: 1 }}>
       <Glow />
+      {waiting}
       <ScrollView
         contentContainerStyle={{
           width: column,
@@ -383,7 +423,6 @@ export default function Today() {
           </View>
           {manage}
         </View>
-        {waiting}
 
         <View style={{ alignSelf: "center" }}>
           <Dial size={Math.min(320, column - 40)} />

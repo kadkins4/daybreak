@@ -100,3 +100,25 @@ export function doneDaysFor(
   }
   return done;
 }
+
+/** A count changed on this screen that the backend has not confirmed yet. */
+export interface PendingCount {
+  /** What the backend held when the first of these taps was made. */
+  base: number;
+  /** What this screen shows now. */
+  count: number;
+}
+
+/**
+ * What to save when pending taps finally reach the backend. The taps are
+ * added on top of whatever is there now, so taps made offline on one screen
+ * and taps made meanwhile on another both count. Returns null when the
+ * backend already holds this screen's count and there is nothing to save.
+ */
+export function mergePending(
+  pending: PendingCount,
+  saved: number
+): number | null {
+  if (saved === pending.count) return null;
+  return Math.max(0, saved + (pending.count - pending.base));
+}

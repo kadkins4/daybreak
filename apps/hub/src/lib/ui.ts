@@ -62,9 +62,13 @@ export const label: TextStyle = {
   textTransform: "uppercase",
 };
 
-/** Stops a long-press from selecting text or opening the browser's menu. */
+/**
+ * Stops a long-press from selecting text or opening the browser's menu.
+ * iPhone browsers need the prefixed form, and need it on the text itself.
+ */
 export const noSelect = web({
   userSelect: "none",
+  WebkitUserSelect: "none",
   WebkitTouchCallout: "none",
   WebkitTapHighlightColor: "transparent",
 });

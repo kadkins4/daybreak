@@ -1,6 +1,7 @@
 import {
   currentStreak,
   isDone,
+  mergePending,
   type DayKey,
   type Habit,
   type HabitType,
@@ -36,11 +37,14 @@ interface EntryRow {
   count: number;
 }
 
-/** A tap that has not reached the backend yet. */
+/** A changed count that has not reached the backend yet. */
 interface PendingEntry {
   habitId: string;
   day: DayKey;
+  /** What this screen shows now. */
   count: number;
+  /** What the backend held when the first of these taps was made. */
+  base?: number;
 }
 
 type Counts = Record<string, number>;
@@ -62,7 +66,7 @@ export interface HubData {
   streakFor: (habit: Habit, today: DayKey) => number;
   /** Set a day's count. Shows at once, and is sent when there is a connection. */
   setCount: (habitId: string, day: DayKey, count: number) => void;
-  /** How many taps are waiting for a connection. */
+  /** How many changes are waiting for a connection. Zero while online. */
   waiting: number;
   addHabit: (input: HabitInput) => Promise<string | null>;
   updateHabit: (
@@ -131,7 +135,12 @@ export function HubDataProvider({
   const [counts, setCounts] = useState<Counts>({});
   const [outbox, setOutboxState] = useState<Outbox>({});
 
+  // True after a send has failed, until one succeeds.
+  const [offline, setOffline] = useState(false);
+
   const outboxRef = useRef<Outbox>({});
+  const countsRef = useRef<Counts>({});
+  countsRef.current = counts;
   const sending = useRef(false);
   const retry = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasData = useRef(false);
@@ -152,39 +161,80 @@ export function HubDataProvider({
     if (sending.current) return;
     const batch = Object.values(outboxRef.current);
     if (batch.length === 0) return;
-
     sending.current = true;
-    const { error } = await supabase.from("habit_entries").upsert(
-      batch.map((entry) => ({
-        habit_id: entry.habitId,
-        day: entry.day,
-        count: entry.count,
-        updated_at: new Date().toISOString(),
-      })),
-      { onConflict: "habit_id,day" }
-    );
-    sending.current = false;
 
-    if (retry.current) clearTimeout(retry.current);
-    if (error) {
+    const fail = () => {
       // No connection, most likely. Keep the taps and try again shortly.
+      sending.current = false;
+      setOffline(true);
+      if (retry.current) clearTimeout(retry.current);
       retry.current = setTimeout(() => void send(), 5000);
-      return;
+    };
+
+    // Read what the backend holds now, so these taps are added on top of
+    // anything another screen saved in the meantime.
+    const current = await supabase
+      .from("habit_entries")
+      .select("habit_id, day, count")
+      .in("habit_id", [...new Set(batch.map((entry) => entry.habitId))])
+      .in("day", [...new Set(batch.map((entry) => entry.day))]);
+    if (current.error) return fail();
+    const saved: Counts = {};
+    for (const row of current.data as EntryRow[]) {
+      saved[entryKey(row.habit_id, row.day)] = row.count;
     }
 
-    setCounts((current) => {
-      const next = { ...current };
-      for (const entry of batch) {
-        next[entryKey(entry.habitId, entry.day)] = entry.count;
+    const toSave: PendingEntry[] = [];
+    const settled: Counts = {};
+    const pending = { ...outboxRef.current };
+    for (const { habitId, day } of batch) {
+      const key = entryKey(habitId, day);
+      const entry = pending[key];
+      const held = saved[key] ?? 0;
+      const count =
+        entry.base === undefined
+          ? entry.count
+          : mergePending({ base: entry.base, count: entry.count }, held);
+      if (count === null) {
+        // Already there, from an earlier try whose answer never arrived.
+        settled[key] = held;
+        delete pending[key];
+        continue;
       }
-      return next;
-    });
-    // Drop what was sent, unless it was tapped again while sending.
-    const remaining = { ...outboxRef.current };
-    for (const entry of batch) {
-      const key = entryKey(entry.habitId, entry.day);
-      if (remaining[key]?.count === entry.count) delete remaining[key];
+      // Remember what is being sent before sending it, so a retry after a
+      // lost answer does not add the same taps twice.
+      pending[key] = { habitId, day, count, base: held };
+      toSave.push(pending[key]);
     }
+    setOutbox(pending);
+
+    if (toSave.length > 0) {
+      const { error } = await supabase.from("habit_entries").upsert(
+        toSave.map((entry) => ({
+          habit_id: entry.habitId,
+          day: entry.day,
+          count: entry.count,
+          updated_at: new Date().toISOString(),
+        })),
+        { onConflict: "habit_id,day" }
+      );
+      if (error) return fail();
+    }
+    sending.current = false;
+    setOffline(false);
+    if (retry.current) clearTimeout(retry.current);
+
+    const remaining = { ...outboxRef.current };
+    for (const entry of toSave) {
+      const key = entryKey(entry.habitId, entry.day);
+      settled[key] = entry.count;
+      const latest = remaining[key];
+      if (!latest) continue;
+      if (latest.count === entry.count) delete remaining[key];
+      // Tapped again while sending: only the new taps are still pending.
+      else remaining[key] = { ...latest, base: entry.count };
+    }
+    setCounts((counts) => ({ ...counts, ...settled }));
     setOutbox(remaining);
     if (Object.keys(remaining).length > 0) void send();
   }, [setOutbox]);
@@ -331,13 +381,16 @@ export function HubDataProvider({
       streakFor: (habit, today) =>
         currentStreak(doneDays.get(habit.id) ?? [], today),
       setCount(habitId, day, count) {
+        const key = entryKey(habitId, day);
+        const base =
+          outboxRef.current[key]?.base ?? countsRef.current[key] ?? 0;
         setOutbox({
           ...outboxRef.current,
-          [entryKey(habitId, day)]: { habitId, day, count },
+          [key]: { habitId, day, count, base },
         });
         void send();
       },
-      waiting: Object.keys(outbox).length,
+      waiting: offline ? Object.keys(outbox).length : 0,
       addHabit(input) {
         const last = Math.max(-1, ...allHabits.map((habit) => habit.position));
         return save(
@@ -399,7 +452,7 @@ export function HubDataProvider({
         await save(supabase.from("habits").update(patch).eq("id", id));
       },
     };
-  }, [status, allHabits, merged, doneDays, outbox, setOutbox, send]);
+  }, [status, allHabits, merged, doneDays, outbox, offline, setOutbox, send]);
 
   return (
     <HubDataContext.Provider value={value}>{children}</HubDataContext.Provider>

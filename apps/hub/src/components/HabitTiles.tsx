@@ -7,12 +7,22 @@ import {
   progressLabel,
   type Habit,
 } from "@hub/core";
-import { Pressable, Text, View } from "react-native";
+import {
+  Pressable,
+  Text as BaseText,
+  View,
+  type TextProps,
+} from "react-native";
 
 import { useSky } from "@/lib/sky";
 import { color, finishedTile, font, noSelect, tile } from "@/lib/ui";
 
 import { Icon, habitIcon } from "./Icon";
+
+/** Text that a long-press cannot select. */
+function Text({ style, ...props }: TextProps) {
+  return <BaseText selectable={false} {...props} style={[style, noSelect]} />;
+}
 
 interface HabitTileProps {
   habit: Habit;
@@ -29,7 +39,10 @@ function useHabitPress({ habit, count, onChange }: HabitTileProps) {
     done,
     onPress: () => onChange(countAfterTap(habit, count)),
     onLongPress: () => onChange(countAfterLongPress(count)),
-    accessibilityLabel: `${habit.name}, ${done ? "done" : status}`,
+    accessibilityLabel:
+      habit.type === "increment"
+        ? `${habit.name}, ${status}${done ? ", done" : ""}`
+        : `${habit.name}, ${done ? "done" : "not done"}`,
     accessibilityHint:
       habit.type === "increment"
         ? "Tap to add one, long-press to take one away"
@@ -68,6 +81,21 @@ function Chip({
   );
 }
 
+/**
+ * The line under a Habit's name. Counting Habits always show the count, even
+ * past the daily number, so taking one back is never a guess. One-tap Habits
+ * show their note until they are done.
+ */
+function statusLine(
+  habit: Habit,
+  count: number,
+  done: boolean,
+  note: string | null
+): string {
+  if (habit.type === "increment") return progressLabel(habit, count);
+  return done ? "Done" : (note ?? "To do");
+}
+
 /** A Habit as a wide row: icon, name, status, progress and streak. */
 export function HabitRow(props: HabitTileProps) {
   const { habit, count, streak } = props;
@@ -75,14 +103,7 @@ export function HabitRow(props: HabitTileProps) {
   const { done, ...press } = useHabitPress(props);
   const { title, note } = habitTitleAndNote(habit.name);
 
-  const status =
-    habit.type === "increment"
-      ? done
-        ? "Done"
-        : progressLabel(habit, count)
-      : done
-        ? "Done"
-        : (note ?? "Not yet");
+  const status = statusLine(habit, count, done, note);
 
   return (
     <Pressable
@@ -200,13 +221,14 @@ export function HabitSquare(props: HabitTileProps & { width: number }) {
         {habitShortName(habit)}
       </Text>
       <Text
+        numberOfLines={1}
         style={{
           fontFamily: font.regular,
           fontSize: 12,
           color: done ? accent() : color.muted,
         }}
       >
-        {done ? "Done" : `${count} of ${habit.dailyNumber}`}
+        {statusLine(habit, count, done, habitTitleAndNote(habit.name).note)}
       </Text>
     </Pressable>
   );

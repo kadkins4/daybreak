@@ -15,9 +15,11 @@ export {
   habitShortName,
   habitTitleAndNote,
   isDone,
+  mergePending,
   progressLabel,
   type Habit,
   type HabitType,
+  type PendingCount,
 } from "./habits";
 export {
   moonElongation,
