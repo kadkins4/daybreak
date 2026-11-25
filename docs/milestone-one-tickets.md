@@ -34,7 +34,7 @@ A sign-in screen, a session that lasts until she signs out, and a redirect to si
 
 ## Habits
 
-### 5. Day rollover logic
+### 5. Day rollover logic (done)
 
 In the shared package: given a moment and a time zone, return which day it belongs to, with the day changing at 4:00 am local time.
 
