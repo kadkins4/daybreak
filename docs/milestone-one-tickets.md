@@ -18,7 +18,7 @@ Deploy the web output so it opens on a phone browser, redeploying on every push 
 - **Done when:** the Today page from ticket 1 loads on Kendall's phone from a real address.
 - **Blocked by:** 1.
 
-### 3. Supabase project and tables
+### 3. Supabase project and tables (done)
 
 Create the project and the three tables from the spec (Habit, Habit entry, Settings), with every row locked to its owner. Table changes live in the repo as migration files.
 
