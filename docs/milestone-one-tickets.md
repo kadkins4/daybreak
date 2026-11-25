@@ -11,7 +11,7 @@ One repo with the React Native app (web output on), a shared logic package, Type
 - **Done when:** one command starts the app and a browser shows a page titled Today; one command runs an example test in the shared package.
 - **Blocked by:** nothing.
 
-### 2. Put it on a web address
+### 2. Put it on a web address (done)
 
 Deploy the web output so it opens on a phone browser, redeploying on every push to main. Host on Vercel as its own Vercel project, the same way Kendall's other portfolio projects are set up. `vercel.json` already has the build settings.
 
