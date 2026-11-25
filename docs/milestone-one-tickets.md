@@ -25,7 +25,7 @@ Create the project and the three tables from the spec (Habit, Habit entry, Setti
 - **Done when:** a fresh database can be built from the repo alone, and a signed-out request can read nothing.
 - **Blocked by:** 1.
 
-### 4. Sign in with a password
+### 4. Sign in with a password (done)
 
 A sign-in screen, a session that lasts until she signs out, and a redirect to sign-in when signed out. This adds the second screen, so set up Expo Router here.
 
@@ -78,16 +78,16 @@ Step back to an earlier day and change that day's entries.
 
 ## Sync and polish
 
-### 11. Live sync
+### 11. Live sync (done)
 
 A change made on one screen appears on any other open screen without a refresh.
 
 - **Done when:** a tap on the phone shows on the laptop within about two seconds.
 - **Blocked by:** 7.
 
-### 12. Offline taps
+### 12. Offline taps (done)
 
-Taps made without a connection are kept and sent when the connection returns.
+Taps made without a connection are kept and sent when the connection returns. They are added on top of anything another screen saved in the meantime, so neither screen's taps are lost.
 
 - **Done when:** three taps made in airplane mode appear on the other screen after reconnecting, with no duplicates.
 - **Blocked by:** 11.
@@ -99,7 +99,7 @@ A backend function fetches the day's conditions, current temperature, high, low,
 - **Done when:** Today shows the weather for where she is, and shows San Diego's when location is denied.
 - **Blocked by:** 4. Can run alongside 5 to 12.
 
-### 14. Today layout
+### 14. Today layout (done)
 
 Build the layout in `docs/design.md`: three columns on wide screens, one scrolling column on the phone with Habits as small squares, placeholders for Tasks and events, and disabled Morning Drive and Journey buttons. Use the Morning colors throughout for now. Add the optional short name to Habits.
 

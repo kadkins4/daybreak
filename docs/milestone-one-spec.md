@@ -40,7 +40,7 @@ Terms in capitals are defined in `GLOSSARY.md`.
 - **The day** follows the local time of the screen being used, so it moves with her when she travels.
 - **Day rollover** happens at 4:00 am local time rather than midnight, so a late night still counts toward the day she is ending. Previous days stay editable, so a missed check-off can be fixed later.
 - **Archived Habits** keep their history and can be restored.
-- **Offline:** taps made without a connection are kept and sent when the connection returns.
+- **Offline:** taps made without a connection are kept and sent when the connection returns. They are added on top of anything another screen saved in the meantime.
 
 ## Today layout
 
