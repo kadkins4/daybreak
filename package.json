@@ -1,0 +1,18 @@
+{
+  "name": "the-hub",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter hub web",
+    "build:web": "pnpm --filter hub build:web",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "pnpm format:check && pnpm typecheck && pnpm test && pnpm build:web"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  },
+  "packageManager": "pnpm@10.28.0"
+}
