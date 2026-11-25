@@ -11,6 +11,8 @@ Ideas deliberately parked so they stay out of the current milestone.
 - More Journey Modes (car, bus, boat or ship, kayak)
 - Fantasy art style for Journeys
 - A demo mode with sample data, for showing the Hub on the portfolio
+- Settings screen, opened from a button at the top right of Today next to the time. The spot is reserved in the design; the button is left out until the screen exists. First settings: Fahrenheit or Celsius, day rollover time, fallback weather location, and whether colors follow the sun or stay on one palette
+- Moon extras on the dial, such as a blood moon during a total lunar eclipse
 
 ## If the Hub is ever released
 
