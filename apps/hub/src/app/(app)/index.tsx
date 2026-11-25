@@ -218,6 +218,14 @@ export default function Today() {
     ) : null;
 
   if (wide) {
+    const habitRows = (
+      <>
+        {notice}
+        {hub.habits.map((habit) => (
+          <HabitRow key={habit.id} {...tileProps(habit)} />
+        ))}
+      </>
+    );
     const scale = Math.min(
       1.4,
       Math.max(0.8, Math.min(width / 1280, height / 720))
@@ -296,16 +304,18 @@ export default function Today() {
             </View>
 
             <View style={{ width: 320, gap: 12 }}>
-              <ScrollView
-                style={{ flex: 1 }}
-                contentContainerStyle={{ flexGrow: 1, gap: 12 }}
-                showsVerticalScrollIndicator={false}
-              >
-                {notice}
-                {hub.habits.map((habit) => (
-                  <HabitRow key={habit.id} {...tileProps(habit)} />
-                ))}
-              </ScrollView>
+              {/* Up to five rows share the height. More than that scroll. */}
+              {hub.habits.length > 5 ? (
+                <ScrollView
+                  style={{ flex: 1 }}
+                  contentContainerStyle={{ flexGrow: 1, gap: 12 }}
+                  showsVerticalScrollIndicator={false}
+                >
+                  {habitRows}
+                </ScrollView>
+              ) : (
+                <View style={{ flex: 1, gap: 12 }}>{habitRows}</View>
+              )}
               <ComingButtons />
             </View>
           </View>
