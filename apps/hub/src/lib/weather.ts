@@ -50,6 +50,34 @@ async function currentPosition(): Promise<Position | null> {
 }
 
 /**
+ * The nearest town or city, from OpenStreetMap. Asked from the browser,
+ * with the position already rounded to about a kilometre.
+ */
+async function placeName(position: Position): Promise<string | null> {
+  try {
+    const response = await fetch(
+      "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10" +
+        `&lat=${position.latitude}&lon=${position.longitude}` +
+        "&accept-language=en"
+    );
+    if (!response.ok) return null;
+    const { address } = await response.json();
+    return (
+      address?.city ??
+      address?.town ??
+      address?.village ??
+      address?.hamlet ??
+      address?.municipality ??
+      address?.suburb ??
+      address?.county ??
+      null
+    );
+  } catch {
+    return null;
+  }
+}
+
+/**
  * The weather for a calendar date where she is, falling back to the place in
  * Settings when location is denied. Null until it has loaded.
  */
@@ -67,7 +95,7 @@ export function useWeather(date: string): {
 
   useEffect(() => {
     let cancelled = false;
-    const key = `hub.weather.2.${date}`;
+    const key = `hub.weather.3.${date}`;
 
     const load = async (
       where: string,

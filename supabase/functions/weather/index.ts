@@ -1,7 +1,9 @@
 // The day's weather for one place, from Open-Meteo, saved for the day.
 //
-// Send { date, latitude?, longitude? }. Without coordinates it uses the
-// fallback location from Settings (San Diego unless changed).
+// Send { date, latitude?, longitude?, place? }. Without coordinates it uses
+// the fallback location from Settings (San Diego unless changed). The app
+// looks up the town name itself and sends it as `place`, because the free
+// OpenStreetMap lookup turns away requests from hosted servers.
 //
 // Open-Meteo's free tier is for non-commercial use only (see docs/later.md).
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -26,33 +28,6 @@ const minutesOf = (timestamp: string) => {
 };
 
 const round2 = (value: number) => Math.round(value * 100) / 100;
-
-/** The nearest town or city, or null when the lookup fails. */
-async function placeName(
-  latitude: number,
-  longitude: number
-): Promise<string | null> {
-  try {
-    const url =
-      "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10" +
-      `&lat=${latitude}&lon=${longitude}&accept-language=en`;
-    const response = await fetch(url, {
-      headers: { "User-Agent": "the-hub personal project" },
-    });
-    if (!response.ok) return null;
-    const { address } = await response.json();
-    return (
-      address?.city ??
-      address?.town ??
-      address?.village ??
-      address?.municipality ??
-      address?.county ??
-      null
-    );
-  } catch {
-    return null;
-  }
-}
 
 Deno.serve(async (request) => {
   if (request.method === "OPTIONS")
@@ -84,6 +59,15 @@ Deno.serve(async (request) => {
     Math.abs(latitude) <= 90 &&
     Math.abs(longitude) <= 180;
 
+  if (shared && typeof body.place === "string") {
+    // A plain town name: letters, spaces and a little punctuation.
+    place =
+      body.place
+        .replace(/[^\p{L}\p{N} .,'-]/gu, "")
+        .trim()
+        .slice(0, 60) || null;
+  }
+
   if (!shared) {
     const { data: settings } = await supabase
       .from("settings")
@@ -106,8 +90,17 @@ Deno.serve(async (request) => {
     .eq("longitude", longitude)
     .maybeSingle();
   // Weather saved before the time zone was recorded is fetched again.
-  if (saved?.payload?.utcOffsetSeconds !== undefined)
+  if (saved?.payload?.utcOffsetSeconds !== undefined) {
+    // Fill in the town name if it was not known when this was saved.
+    if (shared && place && saved.payload.place !== place) {
+      const named = { ...saved.payload, place };
+      await supabase
+        .from("weather_cache")
+        .upsert({ date, latitude, longitude, payload: named });
+      return reply(named);
+    }
     return reply(saved.payload);
+  }
 
   const forecast = await fetch(
     "https://api.open-meteo.com/v1/forecast" +
@@ -122,7 +115,7 @@ Deno.serve(async (request) => {
 
   const payload = {
     date,
-    place: place ?? (await placeName(latitude, longitude)) ?? "your area",
+    place: place ?? "your area",
     sunrise: minutesOf(daily.sunrise[0]),
     sunset: minutesOf(daily.sunset[0]),
     high: Math.round(daily.temperature_2m_max[0]),
