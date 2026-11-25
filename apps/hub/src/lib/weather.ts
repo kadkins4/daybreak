@@ -42,7 +42,7 @@ export function useWeather(date: string): DayWeather | null {
 
   useEffect(() => {
     let cancelled = false;
-    const key = `hub.weather.${date}`;
+    const key = `hub.weather.2.${date}`;
 
     const load = async (
       where: string,

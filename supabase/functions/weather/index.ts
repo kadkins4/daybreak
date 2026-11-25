@@ -105,7 +105,9 @@ Deno.serve(async (request) => {
     .eq("latitude", latitude)
     .eq("longitude", longitude)
     .maybeSingle();
-  if (saved) return reply(saved.payload);
+  // Weather saved before the time zone was recorded is fetched again.
+  if (saved?.payload?.utcOffsetSeconds !== undefined)
+    return reply(saved.payload);
 
   const forecast = await fetch(
     "https://api.open-meteo.com/v1/forecast" +
@@ -116,7 +118,7 @@ Deno.serve(async (request) => {
       `&start_date=${date}&end_date=${date}`
   );
   if (!forecast.ok) return reply({ error: "Weather is unavailable" }, 502);
-  const { hourly, daily } = await forecast.json();
+  const { hourly, daily, utc_offset_seconds } = await forecast.json();
 
   const payload = {
     date,
@@ -127,6 +129,7 @@ Deno.serve(async (request) => {
     low: Math.round(daily.temperature_2m_min[0]),
     hourlyTemperature: hourly.temperature_2m.slice(0, 24),
     hourlyCode: hourly.weather_code.slice(0, 24),
+    utcOffsetSeconds: utc_offset_seconds,
   };
 
   await supabase

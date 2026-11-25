@@ -5,6 +5,7 @@ import {
   deviceTimeZone,
   isNight,
   minutesIntoDay,
+  onDeviceClock,
   paletteAt,
   type DayKey,
   type DayWeather,
@@ -39,7 +40,13 @@ export function SkyProvider({ children }: { children: ReactNode }) {
   const now = useNow();
   const timeZone = deviceTimeZone();
   const calendarDate = dayFor(now, timeZone, 0);
-  const weather = useWeather(calendarDate);
+  const fetched = useWeather(calendarDate);
+  // The weather comes on its own place's clock. Put it on this screen's.
+  const deviceOffset = -now.getTimezoneOffset() * 60;
+  const weather = useMemo(
+    () => (fetched ? onDeviceClock(fetched, deviceOffset) : null),
+    [fetched, deviceOffset]
+  );
 
   const value = useMemo<Sky>(() => {
     const minutes = minutesIntoDay(now, timeZone);

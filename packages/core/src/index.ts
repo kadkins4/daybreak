@@ -44,6 +44,7 @@ export {
   clockMinutes,
   conditionLabel,
   formatClock,
+  onDeviceClock,
   weatherAt,
   type DayWeather,
 } from "./weather";

@@ -46,6 +46,35 @@ export interface DayWeather {
   hourlyTemperature: number[];
   /** 24 WMO weather codes, one per local hour. */
   hourlyCode: number[];
+  /** How far the place's clock is ahead of UTC, in seconds. */
+  utcOffsetSeconds?: number;
+}
+
+/**
+ * Re-times a day of weather from the place's clock to the clock of the
+ * screen being used. They differ when the weather falls back to a place in
+ * another time zone: San Diego's 4:43 pm sunset is 7:43 pm on a screen in
+ * New York.
+ */
+export function onDeviceClock(
+  weather: DayWeather,
+  deviceOffsetSeconds: number
+): DayWeather {
+  if (weather.utcOffsetSeconds === undefined) return weather;
+  const shift = (deviceOffsetSeconds - weather.utcOffsetSeconds) / 60;
+  if (shift === 0) return weather;
+  const wrap = (minutes: number) => (((minutes + shift) % 1440) + 1440) % 1440;
+  const hours = Math.round(shift / 60);
+  const turn = <T>(values: T[]) =>
+    values.map((_, hour) => values[(((hour - hours) % 24) + 24) % 24]);
+  return {
+    ...weather,
+    sunrise: wrap(weather.sunrise),
+    sunset: wrap(weather.sunset),
+    hourlyTemperature: turn(weather.hourlyTemperature),
+    hourlyCode: turn(weather.hourlyCode),
+    utcOffsetSeconds: deviceOffsetSeconds,
+  };
 }
 
 /** The temperature and sky for a time of day, read from the day's hours. */

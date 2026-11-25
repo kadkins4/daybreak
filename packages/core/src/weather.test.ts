@@ -3,6 +3,7 @@ import {
   clockMinutes,
   conditionLabel,
   formatClock,
+  onDeviceClock,
   weatherAt,
 } from "./weather";
 
@@ -49,5 +50,36 @@ describe("weatherAt", () => {
     const day = { hourlyTemperature, hourlyCode };
     expect(weatherAt(day, 7 * 60 + 42)).toEqual({ temperature: 57, code: 0 });
     expect(weatherAt(day, 23 * 60 + 59)).toEqual({ temperature: 73, code: 3 });
+  });
+});
+
+describe("onDeviceClock", () => {
+  const sanDiego = {
+    date: "2026-11-25",
+    place: "San Diego",
+    sunrise: 387,
+    sunset: 1003,
+    high: 73,
+    low: 55,
+    hourlyTemperature: Array.from({ length: 24 }, (_, hour) => hour),
+    hourlyCode: Array.from({ length: 24 }, (_, hour) => hour),
+    utcOffsetSeconds: -8 * 3600,
+  };
+
+  it("leaves the weather alone on a screen in the same time zone", () => {
+    expect(onDeviceClock(sanDiego, -8 * 3600)).toBe(sanDiego);
+  });
+
+  it("moves sunrise, sunset and the hours onto a screen three hours ahead", () => {
+    const newYork = onDeviceClock(sanDiego, -5 * 3600);
+    expect(newYork.sunrise).toBe(387 + 180);
+    expect(newYork.sunset).toBe(1003 + 180);
+    // 6 pm in New York is 3 pm in San Diego.
+    expect(weatherAt(newYork, 18 * 60).temperature).toBe(15);
+  });
+
+  it("leaves older saved weather without an offset alone", () => {
+    const { utcOffsetSeconds: _, ...old } = sanDiego;
+    expect(onDeviceClock(old, -5 * 3600)).toBe(old);
   });
 });
