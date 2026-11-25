@@ -17,6 +17,7 @@ function localParts(moment: Date, timeZone: string) {
       day: "2-digit",
       hour: "2-digit",
       minute: "2-digit",
+      second: "2-digit",
     });
     partsFormatters.set(timeZone, formatter);
   }
@@ -30,6 +31,7 @@ function localParts(moment: Date, timeZone: string) {
     day: number;
     hour: number;
     minute: number;
+    second: number;
   };
 }
 
@@ -53,6 +55,12 @@ export function dayFor(
   return toDayKey(
     new Date(Date.UTC(year, month - 1, day - (beforeRollover ? 1 : 0)))
   );
+}
+
+/** Minutes since local midnight, with seconds as a fraction. */
+export function minutesIntoDay(moment: Date, timeZone: string): number {
+  const { hour, minute, second } = localParts(moment, timeZone);
+  return hour * 60 + minute + second / 60;
 }
 
 /** The day a number of days after (or, when negative, before) another. */
