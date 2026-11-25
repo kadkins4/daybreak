@@ -17,5 +17,6 @@ Ideas deliberately parked so they stay out of the current milestone.
 ## If the Hub is ever released
 
 - Weather: Open-Meteo's free tier covers non-commercial use only. A release needs their paid plan or a different service.
+- Place names: the weather's town name comes from OpenStreetMap's free lookup, which is for light use only. A release needs a paid lookup or its own.
 - Spotify: personal-project access is capped at five users. A release needs Spotify's approval for wider access.
 - Sign-in: add proper accounts and a setup flow.

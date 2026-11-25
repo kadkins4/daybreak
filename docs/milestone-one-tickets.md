@@ -41,7 +41,7 @@ In the shared package: given a moment and a time zone, return which day it belon
 - **Done when:** tests pass for 11:59 pm, 3:59 am, 4:00 am, and the same moment in two time zones.
 - **Blocked by:** 1. Can run alongside 2 to 4.
 
-### 6. Show Habits and tap to complete
+### 6. Show Habits and tap to complete (done)
 
 Today lists her Habits from the database. Tapping a complete-type Habit marks it done for the day, and tapping again undoes it. Seed the four day-one Habits.
 
@@ -55,21 +55,21 @@ Tap adds one, long-press subtracts one, and progress shows as "2 of 4". Reaching
 - **Done when:** Water and Face and teeth work as described on laptop and phone.
 - **Blocked by:** 6.
 
-### 8. Streaks
+### 8. Streaks (done)
 
 In the shared package: calculate a Habit's streak from its entries. Show it on each Habit.
 
 - **Done when:** tests pass for a late night, a missed day, an unfinished today, and a time-zone change; streaks show on Today.
 - **Blocked by:** 6. Can run alongside 7.
 
-### 9. Manage Habits
+### 9. Manage Habits (done)
 
 A screen to add a Habit (name, type, daily number for increment), rename, reorder, archive and restore.
 
 - **Done when:** a new Habit appears on Today in the chosen position, and an archived one disappears but keeps its history when restored.
 - **Blocked by:** 7.
 
-### 10. Update a previous day
+### 10. Update a previous day (done)
 
 Step back to an earlier day and change that day's entries.
 
@@ -106,21 +106,21 @@ Build the layout in `docs/design.md`: three columns on wide screens, one scrolli
 - **Done when:** it matches the design on a phone, a laptop, and a browser window sized to 1280 by 720.
 - **Blocked by:** 9, 13.
 
-### 15. Sun Dial
+### 15. Sun Dial (done)
 
 Build the Sun Dial from `docs/design.md`: the 24-hour ring, the daylight and night stretches, the elapsed arc, the sun icon at the current time, and the weather inside. After sunset the sun becomes a moon at its real phase. The sun position and moon phase maths live in the shared package with tests. Events on the ring wait for milestone two.
 
 - **Done when:** the dial is correct at sunrise, noon, sunset and midnight, and the moon phase matches a published calendar for three test dates.
 - **Blocked by:** 13, 14.
 
-### 16. Colors follow the sun
+### 16. Colors follow the sun (done)
 
 The accent, glow and base colors blend between the six stops in `docs/design.md` based on the sun's position. The blending lives in the shared package with tests. The glow stays fixed to the bottom of the screen while the phone page scrolls.
 
 - **Done when:** stepping a test clock through a day shows a smooth change with no jumps, and finished Habits are blue at night.
 - **Blocked by:** 15.
 
-### 17. Polish the README
+### 17. Polish the README (done)
 
 Once Today has its real look, rewrite the README to match: screenshots of Today on phone and laptop, a short story of the project, and the Hub's visual style carried into the page.
 
