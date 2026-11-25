@@ -10,6 +10,7 @@ import { useHubData, type HabitInput } from "@/lib/hub-data";
 import { useSession } from "@/lib/session";
 import { useSky } from "@/lib/sky";
 import { color, font, label, tile } from "@/lib/ui";
+import { usePageTitle } from "@/lib/title";
 
 const text = { fontFamily: font.regular, fontSize: 16, color: color.text };
 const mutedText = {
@@ -265,6 +266,7 @@ function describe(habit: Habit): string {
 }
 
 export default function ManageHabits() {
+  usePageTitle("Habits");
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const hub = useHubData();

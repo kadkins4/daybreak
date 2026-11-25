@@ -26,6 +26,7 @@ import { ComingButtons, PlaceholderTile } from "@/components/TodayParts";
 import { useHubData } from "@/lib/hub-data";
 import { useSky } from "@/lib/sky";
 import { color, font, tile } from "@/lib/ui";
+import { usePageTitle } from "@/lib/title";
 
 const TASKS_MESSAGE = "Your top three Tasks will show here.";
 const EVENTS_MESSAGE = "Your next events will show here.";
@@ -144,6 +145,7 @@ function Dial({ size }: { size: number }) {
 }
 
 export default function Today() {
+  usePageTitle("Today");
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const router = useRouter();

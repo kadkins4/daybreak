@@ -4,6 +4,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 
 import { useSession } from "@/lib/session";
 import { color, font, tile, web } from "@/lib/ui";
+import { usePageTitle } from "@/lib/title";
 
 const morning = STOPS.morning;
 
@@ -27,6 +28,7 @@ const fieldLabel = {
 } as const;
 
 export default function SignIn() {
+  usePageTitle("Sign in · Hub");
   const { signIn } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
