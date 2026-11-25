@@ -22,6 +22,20 @@ export function habitShortName(
 }
 
 /**
+ * Splits a Habit's name into a title and a note for the wide rows:
+ * "Morning walk, 5+ minutes" becomes "Morning walk" and "5+ minutes", and
+ * "Work out 20+ minutes" becomes "Work out" and "20+ minutes".
+ */
+export function habitTitleAndNote(name: string): {
+  title: string;
+  note: string | null;
+} {
+  const match = name.match(/^(.*?)(?:,\s+|\s+(?=\d))(.+)$/);
+  if (!match || !match[1].trim()) return { title: name.trim(), note: null };
+  return { title: match[1].trim(), note: match[2].trim() };
+}
+
+/**
  * A Habit is done for the day when a complete-type has been tapped, or an
  * increment-type has reached its daily number. Going past the number still
  * counts as done.

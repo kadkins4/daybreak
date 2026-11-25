@@ -6,6 +6,7 @@ import {
   currentStreak,
   doneDaysFor,
   habitShortName,
+  habitTitleAndNote,
   isDone,
   progressLabel,
 } from "./habits";
@@ -118,5 +119,29 @@ describe("doneDaysFor", () => {
       ["2026-11-24", 5],
     ]);
     expect([...done]).toEqual(["2026-11-22", "2026-11-24"]);
+  });
+});
+
+describe("habitTitleAndNote", () => {
+  it("splits a name at a comma or before a number", () => {
+    expect(habitTitleAndNote("Morning walk, 5+ minutes")).toEqual({
+      title: "Morning walk",
+      note: "5+ minutes",
+    });
+    expect(habitTitleAndNote("Work out 20+ minutes")).toEqual({
+      title: "Work out",
+      note: "20+ minutes",
+    });
+  });
+
+  it("leaves a plain name alone", () => {
+    expect(habitTitleAndNote("Face and teeth")).toEqual({
+      title: "Face and teeth",
+      note: null,
+    });
+    expect(habitTitleAndNote("5 minute stretch")).toEqual({
+      title: "5 minute stretch",
+      note: null,
+    });
   });
 });

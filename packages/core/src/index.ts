@@ -13,6 +13,7 @@ export {
   currentStreak,
   doneDaysFor,
   habitShortName,
+  habitTitleAndNote,
   isDone,
   progressLabel,
   type Habit,
@@ -39,3 +40,10 @@ export {
   type SunTimes,
 } from "./sun";
 export { formatTodayHeading } from "./today";
+export {
+  clockMinutes,
+  conditionLabel,
+  formatClock,
+  weatherAt,
+  type DayWeather,
+} from "./weather";

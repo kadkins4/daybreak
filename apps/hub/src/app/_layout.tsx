@@ -1,0 +1,79 @@
+import { Inter_400Regular } from "@expo-google-fonts/inter/400Regular";
+import { Inter_500Medium } from "@expo-google-fonts/inter/500Medium";
+import { Inter_600SemiBold } from "@expo-google-fonts/inter/600SemiBold";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import { Text, View } from "react-native";
+
+import { SessionProvider, useSession } from "@/lib/session";
+import { isConfigured } from "@/lib/supabase";
+import { color } from "@/lib/ui";
+
+void SplashScreen.preventAutoHideAsync();
+
+const BASE = "#0b0a09";
+
+function Screens() {
+  const { session, loading } = useSession();
+  if (loading) return <View style={{ flex: 1, backgroundColor: BASE }} />;
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: { backgroundColor: BASE },
+      }}
+    >
+      <Stack.Protected guard={session !== null}>
+        <Stack.Screen name="(app)" />
+      </Stack.Protected>
+      <Stack.Protected guard={session === null}>
+        <Stack.Screen name="sign-in" options={{ title: "Sign in · Hub" }} />
+      </Stack.Protected>
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  const [loaded, error] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+  });
+  const ready = loaded || error !== null;
+
+  useEffect(() => {
+    if (ready) void SplashScreen.hideAsync();
+  }, [ready]);
+
+  if (!ready) return <View style={{ flex: 1, backgroundColor: BASE }} />;
+
+  if (!isConfigured) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: BASE,
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 32,
+        }}
+      >
+        <Text style={{ color: color.text, fontSize: 18, textAlign: "center" }}>
+          The Hub is not connected to its backend yet. Set
+          EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
+          then rebuild.
+        </Text>
+      </View>
+    );
+  }
+
+  return (
+    <SessionProvider>
+      <StatusBar style="light" />
+      <Screens />
+    </SessionProvider>
+  );
+}

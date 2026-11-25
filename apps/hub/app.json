@@ -5,7 +5,7 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true
     },
@@ -21,7 +21,12 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
-      "output": "single"
-    }
+      "output": "single",
+      "backgroundColor": "#0b0a09",
+      "themeColor": "#0b0a09"
+    },
+    "plugins": ["expo-router", "expo-font", "expo-splash-screen"],
+    "scheme": "thehub",
+    "backgroundColor": "#0b0a09"
   }
 }
