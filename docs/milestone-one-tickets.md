@@ -1,6 +1,6 @@
 # Milestone One Tickets
 
-Fifteen tickets that build `docs/milestone-one-spec.md`. Each one is a thin slice that can be run and seen working when it is done, sized for one coding-agent session plus review. Work them in order unless "Blocked by" says two can run side by side.
+Seventeen tickets that build `docs/milestone-one-spec.md`. Each one is a thin slice that can be run and seen working when it is done, sized for one coding-agent session plus review. Work them in order unless "Blocked by" says two can run side by side.
 
 ## Foundation
 
@@ -94,24 +94,38 @@ Taps made without a connection are kept and sent when the connection returns.
 
 ### 13. Weather
 
-A backend function fetches the day's conditions, current temperature, high, low and sunset time from Open-Meteo, cached for the day. It uses her current location when the browser shares it and falls back to San Diego. Open-Meteo's free tier is for non-commercial use only (see `docs/later.md`).
+A backend function fetches the day's conditions, current temperature, high, low, sunrise and sunset from Open-Meteo, cached for the day. It uses her current location when the browser shares it and falls back to San Diego. Open-Meteo's free tier is for non-commercial use only (see `docs/later.md`).
 
 - **Done when:** Today shows the weather for where she is, and shows San Diego's when location is denied.
 - **Blocked by:** 4. Can run alongside 5 to 12.
 
 ### 14. Today layout
 
-Final layout from the spec: one column on a phone, two on wider screens, placeholders for Tasks and events, and disabled Morning Drive and Journey buttons. Check it at the Device's 7-inch size.
+Build the layout in `docs/design.md`: three columns on wide screens, one scrolling column on the phone with Habits as small squares, placeholders for Tasks and events, and disabled Morning Drive and Journey buttons. Use the Morning colors throughout for now. Add the optional short name to Habits.
 
-- **Done when:** it reads well on phone, laptop and a browser window sized to 720 by 1280.
+- **Done when:** it matches the design on a phone, a laptop, and a browser window sized to 1280 by 720.
 - **Blocked by:** 9, 13.
 
-### 15. Polish the README
+### 15. Sun Dial
+
+Build the Sun Dial from `docs/design.md`: the 24-hour ring, the daylight and night stretches, the elapsed arc, the sun icon at the current time, and the weather inside. After sunset the sun becomes a moon at its real phase. The sun position and moon phase maths live in the shared package with tests. Events on the ring wait for milestone two.
+
+- **Done when:** the dial is correct at sunrise, noon, sunset and midnight, and the moon phase matches a published calendar for three test dates.
+- **Blocked by:** 13, 14.
+
+### 16. Colors follow the sun
+
+The accent, glow and base colors blend between the six stops in `docs/design.md` based on the sun's position. The blending lives in the shared package with tests. The glow stays fixed to the bottom of the screen while the phone page scrolls.
+
+- **Done when:** stepping a test clock through a day shows a smooth change with no jumps, and finished Habits are blue at night.
+- **Blocked by:** 15.
+
+### 17. Polish the README
 
 Once Today has its real look, rewrite the README to match: screenshots of Today on phone and laptop, a short story of the project, and the Hub's visual style carried into the page.
 
 - **Done when:** someone landing on the repo can see what the Hub looks like and does without running it.
-- **Blocked by:** 14.
+- **Blocked by:** 16.
 
 ## Then
 

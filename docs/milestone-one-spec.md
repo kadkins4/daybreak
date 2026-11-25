@@ -44,18 +44,19 @@ Terms in capitals are defined in `GLOSSARY.md`.
 
 ## Today layout
 
-Top to bottom on a phone, two columns on wider screens:
+The full design is in `docs/design.md`. In short:
 
-1. Date and the day's weather: conditions, current temperature, high, low and sunset time.
-2. Habits, each a large tap target showing name, progress and streak.
-3. Placeholder for three Tasks and the day's events.
-4. Two buttons, disabled for now: Morning Drive and Journey.
+- **Wide screens (Device and web):** three columns. Tasks and events on the left, the Sun Dial with the weather in the centre, and Habits on the right with Morning Drive and Journey as two small buttons beneath them.
+- **Phone:** one scrolling column. The Sun Dial, then Morning Drive and Journey, then Habits as four small squares, then Tasks, then events.
+- **Colors follow the sun**, blending slowly through the day and into night.
 
-The layout should already work at the Device's 7-inch screen size (720 by 1280), so nothing needs redesigning when the hardware arrives.
+Tasks and events show placeholders, and Morning Drive and Journey are disabled, until their milestones.
+
+The Device is used in landscape, 1280 by 720, so the wide layout must work at that size.
 
 ## Data
 
-- **Habit:** name, type (complete or increment), daily number, order, archived flag, created date.
+- **Habit:** name, optional short name (for the phone squares), type (complete or increment), daily number, order, archived flag, created date.
 - **Habit entry:** which Habit, which day, count for that day.
 - **Settings:** fallback location for weather (San Diego), day rollover time.
 

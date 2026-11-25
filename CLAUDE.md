@@ -11,6 +11,8 @@ before touching Expo APIs).
 - `docs/adr/`: decisions that are hard to reverse, one short file each.
 - `docs/milestone-one-spec.md` and `docs/milestone-one-tickets.md`: what is
   being built now. Work one ticket at a time and mark it done in the file.
+- `docs/design.md`: how the Hub looks and how Today is laid out. Build
+  screens to this.
 - `docs/later.md`: parked ideas. Don't build these.
 
 ## Conventions

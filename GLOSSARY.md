@@ -23,6 +23,10 @@ _Avoid_: mobile app, bridge
 The Hub's home screen: the day's weather, Habits, three Tasks, events, and taps to start Morning Drive or a Journey.
 _Avoid_: dashboard, home
 
+**Sun Dial**:
+The 24-hour ring at the centre of Today that shows the sun or moon at the current time, the day's events, and the weather inside it.
+_Avoid_: clock, ring, weather widget
+
 **Ambient**:
 The Device's idle state: still art or a clock, with almost no movement, meant to blend into the room.
 _Avoid_: sleep mode, screensaver
