@@ -95,7 +95,7 @@ export function useWeather(date: string): {
 
   useEffect(() => {
     let cancelled = false;
-    const key = `hub.weather.3.${date}`;
+    const key = `hub.weather.4.${date}`;
 
     const load = async (
       where: string,
@@ -103,7 +103,13 @@ export function useWeather(date: string): {
     ) => {
       const { data, error } = await supabase.functions.invoke<DayWeather>(
         "weather",
-        { body: { date, ...position } }
+        {
+          body: {
+            date,
+            ...position,
+            place: position ? await placeName(position) : undefined,
+          },
+        }
       );
       if (cancelled || error || !data?.hourlyTemperature) return;
       setWeather(data);

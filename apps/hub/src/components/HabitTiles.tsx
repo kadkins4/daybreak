@@ -7,6 +7,7 @@ import {
   progressLabel,
   type Habit,
 } from "@hub/core";
+import { useRef } from "react";
 import {
   Pressable,
   Text as BaseText,
@@ -31,14 +32,33 @@ interface HabitTileProps {
   onChange: (count: number) => void;
 }
 
-/** One tap adds or completes. A long-press takes one back. */
+/**
+ * One tap adds or completes. A long-press takes one back.
+ *
+ * On a touch screen the browser follows a long-press with a made-up click
+ * when the finger lifts. Without the guard below that click would count as
+ * a tap and put the count straight back.
+ */
 function useHabitPress({ habit, count, onChange }: HabitTileProps) {
+  const holding = useRef(false);
+  const releasedAt = useRef(0);
   const done = isDone(habit, count);
   const status = progressLabel(habit, count);
   return {
     done,
-    onPress: () => onChange(countAfterTap(habit, count)),
-    onLongPress: () => onChange(countAfterLongPress(count)),
+    onPress: () => {
+      if (Date.now() - releasedAt.current < 700) return;
+      onChange(countAfterTap(habit, count));
+    },
+    onLongPress: () => {
+      holding.current = true;
+      onChange(countAfterLongPress(count));
+    },
+    onPressOut: () => {
+      // Time the guard from when the finger lifts, however long it held.
+      if (holding.current) releasedAt.current = Date.now();
+      holding.current = false;
+    },
     accessibilityLabel:
       habit.type === "increment"
         ? `${habit.name}, ${status}${done ? ", done" : ""}`
@@ -94,6 +114,12 @@ function statusLine(
 ): string {
   if (habit.type === "increment") return progressLabel(habit, count);
   return done ? "Done" : (note ?? "To do");
+}
+
+/** A square is narrow, so it only shows a note short enough to fit. */
+function squareNote(name: string): string | null {
+  const { note } = habitTitleAndNote(name);
+  return note && note.length <= 11 ? note : null;
 }
 
 /** A Habit as a wide row: icon, name, status, progress and streak. */
@@ -228,7 +254,7 @@ export function HabitSquare(props: HabitTileProps & { width: number }) {
           color: done ? accent() : color.muted,
         }}
       >
-        {statusLine(habit, count, done, habitTitleAndNote(habit.name).note)}
+        {statusLine(habit, count, done, squareNote(habit.name))}
       </Text>
     </Pressable>
   );

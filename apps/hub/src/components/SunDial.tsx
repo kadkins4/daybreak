@@ -8,7 +8,15 @@ import {
 } from "@hub/core";
 import type { ReactNode } from "react";
 import { View } from "react-native";
-import Svg, { Circle, G, Path } from "react-native-svg";
+import Svg, {
+  Circle,
+  ClipPath,
+  Defs,
+  G,
+  Path,
+  RadialGradient,
+  Stop,
+} from "react-native-svg";
 
 const CENTRE = 250;
 const RING = 200;
@@ -60,20 +68,43 @@ function Sun({ x, y, palette }: { x: number; y: number; palette: Palette }) {
   );
 }
 
+/** The dark patches on the moon's face, as offsets from its centre. */
+const SEAS: [number, number, number][] = [
+  [-5, -5, 5.5],
+  [3.5, -7, 3.2],
+  [6, 2.5, 3.6],
+  [-2.5, 5.5, 3],
+  [-8.5, 3, 2.2],
+  [1, -0.5, 2],
+];
+
 function Moon({ x, y, moon }: { x: number; y: number; moon: MoonPhase }) {
-  const radius = 14;
+  const radius = 15;
   // The edge of the lit part is half an ellipse that narrows toward the
   // quarters and widens again toward new and full.
   const edge = radius * Math.abs(1 - 2 * moon.illumination);
-  const gibbous = moon.illumination > 0.5 ? 1 : 0;
+  const gibbous = moon.illumination > 0.5;
   const top = `${fix(x)} ${fix(y - radius)}`;
   const bottom = `${fix(x)} ${fix(y + radius)}`;
+  // Lit on the right while waxing and on the left while waning.
+  const outer = moon.waxing ? 1 : 0;
+  const inner = gibbous === moon.waxing ? 1 : 0;
   const lit =
-    `M${top} A${radius} ${radius} 0 0 1 ${bottom} ` +
-    `A${fix(edge)} ${radius} 0 0 ${gibbous} ${top} Z`;
+    `M${top} A${radius} ${radius} 0 0 ${outer} ${bottom} ` +
+    `A${fix(edge)} ${radius} 0 0 ${inner} ${top} Z`;
   return (
     <G>
-      <Circle cx={x} cy={y} r={30} fill="rgba(190,200,255,0.16)" />
+      <Defs>
+        <ClipPath id="moon-lit">
+          <Path d={lit} />
+        </ClipPath>
+        <RadialGradient id="moon-face" cx="38%" cy="34%" r="75%">
+          <Stop offset="0" stopColor="#ffffff" />
+          <Stop offset="0.6" stopColor="#e9edf8" />
+          <Stop offset="1" stopColor="#bcc3da" />
+        </RadialGradient>
+      </Defs>
+      <Circle cx={x} cy={y} r={32} fill="rgba(190,200,255,0.16)" />
       <Circle
         cx={x}
         cy={y}
@@ -81,9 +112,18 @@ function Moon({ x, y, moon }: { x: number; y: number; moon: MoonPhase }) {
         fill="#1b1d2c"
         stroke="rgba(230,235,255,0.45)"
       />
-      {/* Drawn lit on the right, then mirrored once the moon is waning. */}
-      <G transform={moon.waxing ? undefined : `matrix(-1 0 0 1 ${2 * x} 0)`}>
-        <Path d={lit} fill="#eef1fb" />
+      {/* The surface stays put. Only the lit part of it shows. */}
+      <G clipPath="url(#moon-lit)">
+        <Circle cx={x} cy={y} r={radius} fill="url(#moon-face)" />
+        {SEAS.map(([dx, dy, size]) => (
+          <Circle
+            key={`${dx},${dy}`}
+            cx={x + dx}
+            cy={y + dy}
+            r={size}
+            fill="rgba(96,106,140,0.38)"
+          />
+        ))}
       </G>
     </G>
   );
