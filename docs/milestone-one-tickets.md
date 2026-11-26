@@ -48,7 +48,7 @@ Today lists her Habits from the database. Tapping a complete-type Habit marks it
 - **Done when:** a tap survives a page refresh, and the list resets after rollover.
 - **Blocked by:** 4, 5.
 
-### 7. Increment Habits
+### 7. Increment Habits (done)
 
 Tap adds one, long-press subtracts one, and progress shows as "2 of 4". Reaching the number marks it done, and going past it is allowed.
 
