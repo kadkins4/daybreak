@@ -4,9 +4,9 @@ import Svg, { Circle, Text as SvgText } from "react-native-svg";
 import { color, font } from "@/lib/ui";
 
 /**
- * The Today screen's title: the word in Inter with the sun peeking past the T's right
- * arm, as in the app icon. The sun takes the accent color, so it follows the
- * sun like the rest of the screen.
+ * The Daybreak logo: the word in Inter with the sun peeking past the
+ * shoulder of the D, as in the app icon. The sun takes the accent color, so
+ * it follows the sun like the rest of the screen.
  */
 export function Wordmark({
   size = 36,
@@ -29,11 +29,11 @@ export function Wordmark({
   return (
     <View
       accessibilityRole="header"
-      accessibilityLabel="Today"
-      style={{ width: (150 * size) / 36, height: (52 * size) / 36 }}
+      accessibilityLabel="Daybreak"
+      style={{ width: (190 * size) / 36, height: (52 * size) / 36 }}
     >
-      <Svg width="100%" height="100%" viewBox="0 0 150 52" aria-hidden>
-        <Circle cx={27} cy={13} r={10} fill={accent} />
+      <Svg width="100%" height="100%" viewBox="0 0 190 52" aria-hidden>
+        <Circle cx={26} cy={14} r={10} fill={accent} />
         {/* A dark edge first, so the letter stays clear of the sun. */}
         <SvgText
           {...text}
@@ -42,10 +42,10 @@ export function Wordmark({
           strokeWidth={7}
           strokeLinejoin="round"
         >
-          Today
+          Daybreak
         </SvgText>
         <SvgText {...text} fill={color.text}>
-          Today
+          Daybreak
         </SvgText>
       </Svg>
     </View>
