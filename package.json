@@ -1,10 +1,10 @@
 {
-  "name": "today",
+  "name": "daybreak",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter today-app web",
-    "build:web": "pnpm --filter today-app build:web",
+    "dev": "pnpm --filter daybreak-app web",
+    "build:web": "pnpm --filter daybreak-app build:web",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "format": "prettier --write .",

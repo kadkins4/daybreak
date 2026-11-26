@@ -1,4 +1,4 @@
-import type { DayWeather } from "@today/core";
+import type { DayWeather } from "@daybreak/core";
 import * as Location from "expo-location";
 import { useCallback, useEffect, useState } from "react";
 import { Platform } from "react-native";
@@ -95,7 +95,7 @@ export function useWeather(date: string): {
 
   useEffect(() => {
     let cancelled = false;
-    const key = `today.weather.4.${date}`;
+    const key = `daybreak.weather.4.${date}`;
 
     const load = async (
       where: string,

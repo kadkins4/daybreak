@@ -6,7 +6,7 @@ import {
   moonPhase,
   weatherAt,
   type Habit,
-} from "@today/core";
+} from "@daybreak/core";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
@@ -24,7 +24,7 @@ import { Icon } from "@/components/Icon";
 import { SunDial } from "@/components/SunDial";
 import { Wordmark } from "@/components/Wordmark";
 import { ComingButtons, PlaceholderTile } from "@/components/TodayParts";
-import { useTodayData } from "@/lib/today-data";
+import { useDaybreakData } from "@/lib/daybreak-data";
 import { useSky } from "@/lib/sky";
 import { color, font, tile } from "@/lib/ui";
 import { usePageTitle } from "@/lib/title";
@@ -165,12 +165,12 @@ function Dial({ size }: { size: number }) {
 }
 
 export default function Today() {
-  usePageTitle("Today");
+  usePageTitle("Daybreak");
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const sky = useSky();
-  const data = useTodayData();
+  const data = useDaybreakData();
 
   // Zero is today. One is yesterday, and so on back.
   const [daysBack, setDaysBack] = useState(0);

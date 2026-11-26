@@ -4,7 +4,7 @@ import Svg, { Circle, Text as SvgText } from "react-native-svg";
 import { color, font } from "@/lib/ui";
 
 /**
- * The Today logo: the word in Inter with the sun peeking past the T's right
+ * The Today screen's title: the word in Inter with the sun peeking past the T's right
  * arm, as in the app icon. The sun takes the accent color, so it follows the
  * sun like the rest of the screen.
  */

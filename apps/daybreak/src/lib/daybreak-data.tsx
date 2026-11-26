@@ -5,7 +5,7 @@ import {
   type DayKey,
   type Habit,
   type HabitType,
-} from "@today/core";
+} from "@daybreak/core";
 import {
   createContext,
   useCallback,
@@ -57,7 +57,7 @@ export interface HabitInput {
   dailyNumber: number;
 }
 
-export interface TodayData {
+export interface DaybreakData {
   status: "loading" | "ready" | "error";
   /** Active Habits in their chosen order. */
   habits: Habit[];
@@ -77,7 +77,7 @@ export interface TodayData {
   setArchived: (id: string, archived: boolean) => Promise<void>;
 }
 
-export const TodayDataContext = createContext<TodayData | null>(null);
+export const DaybreakDataContext = createContext<DaybreakData | null>(null);
 
 const entryKey = (habitId: string, day: DayKey) => `${habitId}|${day}`;
 
@@ -123,14 +123,14 @@ async function fetchCounts(): Promise<Counts> {
   }
 }
 
-export function TodayDataProvider({
+export function DaybreakDataProvider({
   userId,
   children,
 }: {
   userId: string;
   children: ReactNode;
 }) {
-  const [status, setStatus] = useState<TodayData["status"]>("loading");
+  const [status, setStatus] = useState<DaybreakData["status"]>("loading");
   const [allHabits, setAllHabits] = useState<Habit[]>([]);
   const [counts, setCounts] = useState<Counts>({});
   const [outbox, setOutboxState] = useState<Outbox>({});
@@ -145,8 +145,8 @@ export function TodayDataProvider({
   const retry = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasData = useRef(false);
 
-  const snapshotKey = `today.snapshot.${userId}`;
-  const outboxKey = `today.outbox.${userId}`;
+  const snapshotKey = `daybreak.snapshot.${userId}`;
+  const outboxKey = `daybreak.outbox.${userId}`;
 
   const setOutbox = useCallback(
     (next: Outbox) => {
@@ -290,7 +290,7 @@ export function TodayDataProvider({
   useEffect(() => {
     let subscribedBefore = false;
     const channel = supabase
-      .channel(`today-${userId}`)
+      .channel(`daybreak-${userId}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "habit_entries" },
@@ -359,7 +359,7 @@ export function TodayDataProvider({
     return done;
   }, [allHabits, merged]);
 
-  const value = useMemo<TodayData>(() => {
+  const value = useMemo<DaybreakData>(() => {
     const active = allHabits
       .filter((habit) => !habit.archived)
       .sort((a, b) => a.position - b.position);
@@ -455,15 +455,15 @@ export function TodayDataProvider({
   }, [status, allHabits, merged, doneDays, outbox, offline, setOutbox, send]);
 
   return (
-    <TodayDataContext.Provider value={value}>
+    <DaybreakDataContext.Provider value={value}>
       {children}
-    </TodayDataContext.Provider>
+    </DaybreakDataContext.Provider>
   );
 }
 
-export function useTodayData(): TodayData {
-  const value = useContext(TodayDataContext);
+export function useDaybreakData(): DaybreakData {
+  const value = useContext(DaybreakDataContext);
   if (!value)
-    throw new Error("useTodayData must be used inside TodayDataProvider");
+    throw new Error("useDaybreakData must be used inside DaybreakDataProvider");
   return value;
 }

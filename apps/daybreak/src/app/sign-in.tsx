@@ -1,8 +1,7 @@
-import { STOPS, css } from "@today/core";
+import { STOPS, css } from "@daybreak/core";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
-import { Wordmark } from "@/components/Wordmark";
 import { useSession } from "@/lib/session";
 import { color, font, tile, web } from "@/lib/ui";
 import { usePageTitle } from "@/lib/title";
@@ -29,7 +28,7 @@ const fieldLabel = {
 } as const;
 
 export default function SignIn() {
-  usePageTitle("Sign in · Today");
+  usePageTitle("Sign in · Daybreak");
   const { signIn } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,7 +61,12 @@ export default function SignIn() {
       ]}
     >
       <View style={[tile(28), { width: "100%", maxWidth: 380, padding: 28 }]}>
-        <Wordmark size={32} accent={css(morning.accent)} base="#1a1715" />
+        <Text
+          accessibilityRole="header"
+          style={{ fontFamily: font.semibold, fontSize: 32, color: color.text }}
+        >
+          Daybreak
+        </Text>
         <Text
           style={{
             fontFamily: font.regular,

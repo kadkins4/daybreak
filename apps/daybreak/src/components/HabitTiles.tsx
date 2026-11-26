@@ -6,7 +6,7 @@ import {
   isDone,
   progressLabel,
   type Habit,
-} from "@today/core";
+} from "@daybreak/core";
 import { useRef } from "react";
 import {
   Pressable,

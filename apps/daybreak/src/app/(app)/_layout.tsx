@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-import { TodayDataProvider } from "@/lib/today-data";
+import { DaybreakDataProvider } from "@/lib/daybreak-data";
 import { useSession } from "@/lib/session";
 import { SkyProvider } from "@/lib/sky";
 
@@ -8,7 +8,7 @@ export default function AppLayout() {
   const { session } = useSession();
   if (!session) return null;
   return (
-    <TodayDataProvider userId={session.user.id}>
+    <DaybreakDataProvider userId={session.user.id}>
       <SkyProvider>
         <Stack
           screenOptions={{
@@ -16,10 +16,13 @@ export default function AppLayout() {
             contentStyle: { backgroundColor: "transparent" },
           }}
         >
-          <Stack.Screen name="index" options={{ title: "Today" }} />
-          <Stack.Screen name="habits" options={{ title: "Habits · Today" }} />
+          <Stack.Screen name="index" options={{ title: "Daybreak" }} />
+          <Stack.Screen
+            name="habits"
+            options={{ title: "Habits · Daybreak" }}
+          />
         </Stack>
       </SkyProvider>
-    </TodayDataProvider>
+    </DaybreakDataProvider>
   );
 }

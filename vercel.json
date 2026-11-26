@@ -2,7 +2,7 @@
   "framework": null,
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build:web",
-  "outputDirectory": "apps/today/dist",
+  "outputDirectory": "apps/daybreak/dist",
   "rewrites": [
     {
       "source": "/(.*)",

@@ -1,7 +1,7 @@
-# Today
+# Daybreak
 
-A personal app for health and focus, formerly called Today. See `README.md` for layout and commands, and
-`apps/today/AGENTS.md` for Expo rules (Expo changes often, so read its docs
+A personal app for health and focus, formerly called Daybreak. See `README.md` for layout and commands, and
+`apps/daybreak/AGENTS.md` for Expo rules (Expo changes often, so read its docs
 before touching Expo APIs).
 
 ## Docs
@@ -11,7 +11,7 @@ before touching Expo APIs).
 - `docs/adr/`: decisions that are hard to reverse, one short file each.
 - `docs/milestone-one-spec.md` and `docs/milestone-one-tickets.md`: what is
   being built now. Work one ticket at a time and mark it done in the file.
-- `docs/design.md`: how Today looks and how the Today screen is laid out. Build
+- `docs/design.md`: how Daybreak looks and how Today is laid out. Build
   screens to this.
 - `docs/later.md`: parked ideas. Don't build these.
 
@@ -21,12 +21,12 @@ before touching Expo APIs).
 - Add Expo-related packages with versions from
   `node_modules/expo/bundledNativeModules.json` so they match the SDK.
 - Shared logic goes in `packages/core` with Vitest tests. UI stays in
-  `apps/today`.
+  `apps/daybreak`.
 - Prettier settings match the portfolio repo: double quotes, semicolons,
   80 columns.
 - Run `pnpm verify` before calling a ticket done.
 
 ## Language
 
-Use the project's terms: Today, Today screen, Device, Habit, Task, Journey, Mode,
+Use the project's terms: Daybreak, Device, Today, Habit, Task, Journey, Mode,
 Morning Drive, Quick Bits, Ambient, Dark, Companion App, Focus Guidance.

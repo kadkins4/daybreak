@@ -1,7 +1,7 @@
 /** A calendar day as "YYYY-MM-DD". Sorts correctly as a plain string. */
 export type DayKey = string;
 
-/** Day rollover: Today's day changes at 4:00 am local time, not midnight. */
+/** Day rollover: Daybreak's day changes at 4:00 am local time, not midnight. */
 export const DEFAULT_ROLLOVER_MINUTES = 4 * 60;
 
 const partsFormatters = new Map<string, Intl.DateTimeFormat>();

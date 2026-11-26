@@ -30,7 +30,10 @@ function Screens() {
         <Stack.Screen name="(app)" />
       </Stack.Protected>
       <Stack.Protected guard={session === null}>
-        <Stack.Screen name="sign-in" options={{ title: "Sign in · Today" }} />
+        <Stack.Screen
+          name="sign-in"
+          options={{ title: "Sign in · Daybreak" }}
+        />
       </Stack.Protected>
     </Stack>
   );
@@ -59,7 +62,7 @@ export default function RootLayout() {
       document.head.appendChild(element);
     };
     add("link", { rel: "apple-touch-icon", href: "/apple-touch-icon.png" });
-    add("meta", { name: "apple-mobile-web-app-title", content: "Today" });
+    add("meta", { name: "apple-mobile-web-app-title", content: "Daybreak" });
   }, []);
 
   if (!ready) return <View style={{ flex: 1, backgroundColor: BASE }} />;
@@ -76,7 +79,7 @@ export default function RootLayout() {
         }}
       >
         <Text style={{ color: color.text, fontSize: 18, textAlign: "center" }}>
-          Today is not connected to its backend yet. Set
+          Daybreak is not connected to its backend yet. Set
           EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
           then rebuild.
         </Text>

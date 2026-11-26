@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Today",
-    "slug": "today",
+    "name": "Daybreak",
+    "slug": "daybreak",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,7 +26,7 @@
       "themeColor": "#0b0a09"
     },
     "plugins": ["expo-router", "expo-font", "expo-splash-screen"],
-    "scheme": "today",
+    "scheme": "daybreak",
     "backgroundColor": "#0b0a09"
   }
 }

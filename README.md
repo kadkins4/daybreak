@@ -1,4 +1,4 @@
-<h1 align="center">Today</h1>
+<h1 align="center">Daybreak</h1>
 
 <p align="center">
   A personal app for health and focus.<br />
@@ -11,16 +11,16 @@
 
 ## What it is
 
-Today is the app I open every morning. It starts as a web app on my laptop
+Daybreak is the app I open every morning. It starts as a web app on my laptop
 and phone, and it ends up living on a small touchscreen device I'm building
 myself.
 
 It's a for-fun project with two goals: make something I use every day, and
 try out different AI-assisted workflows along the way.
 
-## The Today screen
+## Today
 
-The Today screen is home. The Sun Dial in the centre is a 24-hour ring with
+Today is the home screen. The Sun Dial in the centre is a 24-hour ring with
 noon at the top and midnight at the bottom. The sun rides the ring through
 the day, and the weather sits inside it.
 
@@ -64,7 +64,7 @@ Journey and the Habit squares all fit on the first screen.
 - **Journeys**: focus sessions framed as a trip, with calming sound and
   visuals.
 - **Morning Drive**: a wake-up mix of real news shows and music.
-- **The Device**: the small plugged-in screen Today is headed for.
+- **The Device**: the small plugged-in screen Daybreak is headed for.
 
 Their places are already on Today. `docs/` has the spec, the design, the
 decision records and the ticket list.
@@ -75,7 +75,7 @@ One React Native codebase (Expo) that runs as a web app in a browser and on
 the Device, and later as an iPhone app. Supabase is the backend: database,
 sign-in and live sync.
 
-- `apps/today` is the app.
+- `apps/daybreak` is the app.
 - `packages/core` is shared logic with tests: day rollover, streaks, moon
   phase and the colors that follow the sun.
 - `supabase` holds the database migrations and the weather function.
@@ -93,12 +93,12 @@ Run these from the repo root.
 | `pnpm dev`       | Start the app in a browser                   |
 | `pnpm test`      | Run the shared package's tests               |
 | `pnpm typecheck` | Type-check every package                     |
-| `pnpm build:web` | Build the web app into `apps/today/dist`     |
+| `pnpm build:web` | Build the web app into `apps/daybreak/dist`  |
 | `pnpm format`    | Format with Prettier                         |
 | `pnpm verify`    | Format check, typecheck, tests and web build |
 
 The app needs a Supabase project. Put its address and public key in
-`apps/today/.env.local`:
+`apps/daybreak/.env.local`:
 
 ```
 EXPO_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co

@@ -2,7 +2,7 @@
 
 ## Goal
 
-A working Today that Kendall opens every day on a laptop and in a phone browser, showing the Today screen and letting her track Habits. It proves the codebase, the backend and live sync before anything harder is built.
+A working Daybreak that Kendall opens every day on a laptop and in a phone browser, showing Today and letting her track Habits. It proves the codebase, the backend and live sync before anything harder is built.
 
 Terms in capitals are defined in `GLOSSARY.md`.
 
@@ -31,7 +31,7 @@ Terms in capitals are defined in `GLOSSARY.md`.
 5. See each Habit's current streak, and go back to update a previous day.
 6. Add a Habit by giving it a name, a type (complete or increment) and, for increment, a daily number.
 7. Rename, reorder or archive a Habit. Archiving hides it without deleting its history.
-8. Open Today on a second screen and see the same state.
+8. Open Daybreak on a second screen and see the same state.
 
 ## Rules
 

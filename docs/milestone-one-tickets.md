@@ -122,9 +122,9 @@ The accent, glow and base colors blend between the six stops in `docs/design.md`
 
 ### 17. Polish the README (done)
 
-Once Today has its real look, rewrite the README to match: screenshots of Today on phone and laptop, a short story of the project, and its visual style carried into the page.
+Once Today has its real look, rewrite the README to match: screenshots of Today on phone and laptop, a short story of the project, and Daybreak's visual style carried into the page.
 
-- **Done when:** someone landing on the repo can see what Today looks like and does without running it.
+- **Done when:** someone landing on the repo can see what Daybreak looks like and does without running it.
 - **Blocked by:** 16.
 
 ## Then

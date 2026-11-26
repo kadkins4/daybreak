@@ -1,4 +1,4 @@
-import type { Habit, HabitType } from "@today/core";
+import type { Habit, HabitType } from "@daybreak/core";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Glow } from "@/components/Glow";
 import { Icon, habitIcon, type IconName } from "@/components/Icon";
-import { useTodayData, type HabitInput } from "@/lib/today-data";
+import { useDaybreakData, type HabitInput } from "@/lib/daybreak-data";
 import { useSession } from "@/lib/session";
 import { useSky } from "@/lib/sky";
 import { color, font, label, tile } from "@/lib/ui";
@@ -266,10 +266,10 @@ function describe(habit: Habit): string {
 }
 
 export default function ManageHabits() {
-  usePageTitle("Habits");
+  usePageTitle("Habits · Daybreak");
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const data = useTodayData();
+  const data = useDaybreakData();
   const { signOut } = useSession();
 
   // The id of the Habit being edited, "new" while adding, or null.
