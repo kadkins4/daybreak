@@ -8,7 +8,7 @@ import {
   type Habit,
 } from "@daybreak/core";
 import { useRouter } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState, type ComponentRef } from "react";
 import {
   Pressable,
   ScrollView,
@@ -21,6 +21,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Glow } from "@/components/Glow";
 import { HabitRow, HabitSquare } from "@/components/HabitTiles";
 import { Icon } from "@/components/Icon";
+import { Splash } from "@/components/Splash";
 import { SunDial } from "@/components/SunDial";
 import { Wordmark } from "@/components/Wordmark";
 import { ComingButtons, PlaceholderTile } from "@/components/TodayParts";
@@ -177,6 +178,18 @@ export default function Today() {
   const day = addDays(sky.today, -daysBack);
   const wide = width >= 900;
 
+  const logo = useRef<ComponentRef<typeof View>>(null);
+  const splash = (
+    <Splash
+      target={logo}
+      size={wide ? 36 : 32}
+      ready={data.status !== "loading"}
+      accent={sky.accent()}
+      glow={sky.glow()}
+      base={sky.base}
+    />
+  );
+
   // Yesterday is named. Any other day shows its date.
   const dayName =
     daysBack === 0 ? "Today · " : daysBack === 1 ? "Yesterday · " : "";
@@ -289,7 +302,9 @@ export default function Today() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
             >
-              <Wordmark size={36} accent={sky.accent()} base={sky.base} />
+              <View ref={logo}>
+                <Wordmark size={36} accent={sky.accent()} base={sky.base} />
+              </View>
               <Text
                 style={{
                   fontFamily: font.regular,
@@ -354,6 +369,7 @@ export default function Today() {
             </View>
           </View>
         </View>
+        {splash}
       </View>
     );
   }
@@ -383,7 +399,9 @@ export default function Today() {
           }}
         >
           <View>
-            <Wordmark size={32} accent={sky.accent()} base={sky.base} />
+            <View ref={logo}>
+              <Wordmark size={32} accent={sky.accent()} base={sky.base} />
+            </View>
             <View
               style={{
                 flexDirection: "row",
@@ -431,6 +449,7 @@ export default function Today() {
           minHeight={150}
         />
       </ScrollView>
+      {splash}
     </View>
   );
 }
