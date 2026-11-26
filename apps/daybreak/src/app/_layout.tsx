@@ -63,6 +63,15 @@ export default function RootLayout() {
     };
     add("link", { rel: "apple-touch-icon", href: "/apple-touch-icon.png" });
     add("meta", { name: "apple-mobile-web-app-title", content: "Daybreak" });
+
+    // Daybreak is tapped, not read like a page, so a tap or a long-press
+    // never selects text. Fields you type in still work as usual.
+    const style = document.createElement("style");
+    style.textContent =
+      "*{-webkit-user-select:none;user-select:none;" +
+      "-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}" +
+      "input,textarea{-webkit-user-select:text;user-select:text}";
+    document.head.appendChild(style);
   }, []);
 
   if (!ready) return <View style={{ flex: 1, backgroundColor: BASE }} />;
