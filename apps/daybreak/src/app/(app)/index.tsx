@@ -178,7 +178,9 @@ export default function Today() {
   const wide = width >= 900;
 
   // Yesterday is named. Any other day shows its date.
-  const dayLabel = daysBack === 1 ? "Yesterday" : formatDayHeading(day);
+  const dayName =
+    daysBack === 0 ? "Today · " : daysBack === 1 ? "Yesterday · " : "";
+  const dayLabel = dayName + formatDayHeading(day);
 
   const dayStepper = (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
