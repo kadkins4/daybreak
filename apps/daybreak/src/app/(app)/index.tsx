@@ -1,5 +1,6 @@
 import {
   addDays,
+  hasEarlierDay,
   conditionLabel,
   formatClock,
   formatDayShort,
@@ -201,6 +202,7 @@ export default function Today() {
         icon="left"
         label="Previous day"
         size={32}
+        disabled={!hasEarlierDay(day)}
         onPress={() => setDaysBack(daysBack + 1)}
       />
       <RoundButton

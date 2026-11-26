@@ -1,6 +1,8 @@
 export {
   DEFAULT_ROLLOVER_MINUTES,
   addDays,
+  FIRST_DAY,
+  hasEarlierDay,
   dayFor,
   deviceTimeZone,
   formatDayHeading,

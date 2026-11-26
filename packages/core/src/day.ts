@@ -63,6 +63,14 @@ export function minutesIntoDay(moment: Date, timeZone: string): number {
   return hour * 60 + minute + second / 60;
 }
 
+/** The day Daybreak was first used. There is nothing to show before it. */
+export const FIRST_DAY: DayKey = "2026-11-26";
+
+/** True when a day has a day before it that Daybreak can show. */
+export function hasEarlierDay(day: DayKey): boolean {
+  return day > FIRST_DAY;
+}
+
 /** The day a number of days after (or, when negative, before) another. */
 export function addDays(day: DayKey, amount: number): DayKey {
   const [year, month, date] = day.split("-").map(Number);

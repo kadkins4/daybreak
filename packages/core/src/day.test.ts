@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { addDays, dayFor, formatDayHeading, formatDayShort } from "./day";
+import {
+  addDays,
+  dayFor,
+  formatDayHeading,
+  formatDayShort,
+  hasEarlierDay,
+} from "./day";
 
 const SAN_DIEGO = "America/Los_Angeles";
 const NEW_YORK = "America/New_York";
@@ -62,6 +68,14 @@ describe("addDays", () => {
   it("steps forward and back across month ends", () => {
     expect(addDays("2026-11-30", 1)).toBe("2026-12-01");
     expect(addDays("2026-03-01", -1)).toBe("2026-02-28");
+  });
+});
+
+describe("hasEarlierDay", () => {
+  it("stops at the day Daybreak was first used", () => {
+    expect(hasEarlierDay("2026-11-27")).toBe(true);
+    expect(hasEarlierDay("2026-11-26")).toBe(false);
+    expect(hasEarlierDay("2026-10-08")).toBe(false);
   });
 });
 
