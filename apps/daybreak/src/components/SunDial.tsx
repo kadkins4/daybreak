@@ -12,6 +12,7 @@ import Svg, {
   Circle,
   ClipPath,
   Defs,
+  Ellipse,
   G,
   Path,
   RadialGradient,
@@ -68,14 +69,27 @@ function Sun({ x, y, palette }: { x: number; y: number; palette: Palette }) {
   );
 }
 
-/** The dark patches on the moon's face, as offsets from its centre. */
-const SEAS: [number, number, number][] = [
-  [-5, -5, 5.5],
-  [3.5, -7, 3.2],
-  [6, 2.5, 3.6],
-  [-2.5, 5.5, 3],
-  [-8.5, 3, 2.2],
-  [1, -0.5, 2],
+/**
+ * The moon's dark seas as seen from Earth, as ovals on a moon of radius 15:
+ * offset from the centre, half-width, half-height and tilt in degrees.
+ */
+const SEAS: [number, number, number, number, number][] = [
+  [-6.9, -1.5, 3.9, 6.9, -12],
+  [-3.0, -6.9, 4.2, 4.2, 0],
+  [3.3, -5.7, 3.0, 3.0, 0],
+  [5.7, -1.2, 3.3, 2.7, 25],
+  [8.7, 2.7, 1.8, 2.7, 0],
+  [10.2, -4.5, 1.5, 1.2, 0],
+  [-2.7, 4.8, 3.3, 2.1, -20],
+  [-6.9, 6.6, 1.5, 1.2, 0],
+];
+
+/** Bright young craters: offset from the centre, radius and brightness. */
+const CRATERS: [number, number, number, number][] = [
+  [-1.5, 10.8, 0.9, 0.95],
+  [-4.5, -0.3, 0.66, 0.8],
+  [-9.0, -3.6, 0.48, 0.7],
+  [3.6, 7.2, 0.48, 0.6],
 ];
 
 function Moon({ x, y, moon }: { x: number; y: number; moon: MoonPhase }) {
@@ -115,13 +129,27 @@ function Moon({ x, y, moon }: { x: number; y: number; moon: MoonPhase }) {
       {/* The surface stays put. Only the lit part of it shows. */}
       <G clipPath="url(#moon-lit)">
         <Circle cx={x} cy={y} r={radius} fill="url(#moon-face)" />
-        {SEAS.map(([dx, dy, size]) => (
+        <G opacity={0.5}>
+          {SEAS.map(([dx, dy, rx, ry, tilt]) => (
+            <Ellipse
+              key={`${dx},${dy}`}
+              cx={x + dx}
+              cy={y + dy}
+              rx={rx}
+              ry={ry}
+              fill="#6b7086"
+              transform={`rotate(${tilt} ${fix(x + dx)} ${fix(y + dy)})`}
+            />
+          ))}
+        </G>
+        {CRATERS.map(([dx, dy, size, opacity]) => (
           <Circle
             key={`${dx},${dy}`}
             cx={x + dx}
             cy={y + dy}
             r={size}
-            fill="rgba(96,106,140,0.38)"
+            fill="#ffffff"
+            opacity={opacity}
           />
         ))}
       </G>

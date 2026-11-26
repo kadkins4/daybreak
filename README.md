@@ -31,6 +31,9 @@ over at 4:00 am, so a late night still counts toward the day it started in.
 A tap on one screen shows up on the other within a couple of seconds. Taps
 made without a connection are kept and sent when it comes back.
 
+Opening the app plays a short sunrise: the sun comes up over a horizon, the
+name rises out of the line, and the two settle into the logo in the header.
+
 ## Colors that follow the sun
 
 Nothing on the screen is a fixed accent color. The accent, the glow at the
