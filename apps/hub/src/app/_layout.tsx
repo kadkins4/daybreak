@@ -6,7 +6,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 
 import { SessionProvider, useSession } from "@/lib/session";
 import { isConfigured } from "@/lib/supabase";
@@ -47,6 +47,20 @@ export default function RootLayout() {
   useEffect(() => {
     if (ready) void SplashScreen.hideAsync();
   }, [ready]);
+
+  // Tell iPhones which icon and name to use for "Add to Home Screen".
+  useEffect(() => {
+    if (Platform.OS !== "web") return;
+    const add = (tag: "link" | "meta", attributes: Record<string, string>) => {
+      const element = document.createElement(tag);
+      for (const [name, value] of Object.entries(attributes)) {
+        element.setAttribute(name, value);
+      }
+      document.head.appendChild(element);
+    };
+    add("link", { rel: "apple-touch-icon", href: "/apple-touch-icon.png" });
+    add("meta", { name: "apple-mobile-web-app-title", content: "Hub" });
+  }, []);
 
   if (!ready) return <View style={{ flex: 1, backgroundColor: BASE }} />;
 
