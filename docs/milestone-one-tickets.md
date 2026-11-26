@@ -92,9 +92,9 @@ Taps made without a connection are kept and sent when the connection returns. Th
 - **Done when:** three taps made in airplane mode appear on the other screen after reconnecting, with no duplicates.
 - **Blocked by:** 11.
 
-### 13. Weather
+### 13. Weather (done)
 
-A backend function fetches the day's conditions, current temperature, high, low, sunrise and sunset from Open-Meteo, cached for the day. It uses her current location when the browser shares it and falls back to San Diego. Open-Meteo's free tier is for non-commercial use only (see `docs/later.md`).
+A backend function fetches the day's conditions, current temperature, high, low, sunrise and sunset from Open-Meteo, cached for the day. The town name is looked up in the app from OpenStreetMap, which turns away hosted servers. It uses her current location when the browser shares it and falls back to San Diego. Open-Meteo's free tier is for non-commercial use only (see `docs/later.md`).
 
 - **Done when:** Today shows the weather for where she is, and shows San Diego's when location is denied.
 - **Blocked by:** 4. Can run alongside 5 to 12.
