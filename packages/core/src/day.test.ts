@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addDays, dayFor, formatDayHeading } from "./day";
+import { addDays, dayFor, formatDayHeading, formatDayShort } from "./day";
 
 const SAN_DIEGO = "America/Los_Angeles";
 const NEW_YORK = "America/New_York";
@@ -68,5 +68,15 @@ describe("addDays", () => {
 describe("formatDayHeading", () => {
   it("formats a day as weekday, month and day", () => {
     expect(formatDayHeading("2026-11-24")).toBe("Tuesday, November 24");
+  });
+});
+
+describe("formatDayShort", () => {
+  it("formats a day as weekday and month/day", () => {
+    expect(formatDayShort("2026-11-24")).toBe("Tuesday 11/24");
+  });
+
+  it("drops leading zeros", () => {
+    expect(formatDayShort("2027-01-05")).toBe("Tuesday 1/5");
   });
 });

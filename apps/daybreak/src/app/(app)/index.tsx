@@ -2,7 +2,7 @@ import {
   addDays,
   conditionLabel,
   formatClock,
-  formatDayHeading,
+  formatDayShort,
   moonPhase,
   weatherAt,
   type Habit,
@@ -193,7 +193,7 @@ export default function Today() {
   // Yesterday is named. Any other day shows its date.
   const dayName =
     daysBack === 0 ? "Today · " : daysBack === 1 ? "Yesterday · " : "";
-  const dayLabel = dayName + formatDayHeading(day);
+  const dayLabel = dayName + formatDayShort(day);
 
   const dayStepper = (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
@@ -302,9 +302,15 @@ export default function Today() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
             >
-              <View ref={logo}>
+              <Pressable
+                ref={logo}
+                onPress={() => setDaysBack(0)}
+                accessibilityRole="button"
+                accessibilityLabel="Go to today"
+              >
                 <Wordmark size={36} accent={sky.accent()} base={sky.base} />
-              </View>
+              </Pressable>
+              <View style={{ marginTop: 8 }}>{dayStepper}</View>
               <Text
                 style={{
                   fontFamily: font.regular,
@@ -315,7 +321,6 @@ export default function Today() {
               >
                 {dayLabel}
               </Text>
-              <View style={{ marginTop: 8 }}>{dayStepper}</View>
             </View>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
@@ -399,9 +404,15 @@ export default function Today() {
           }}
         >
           <View>
-            <View ref={logo}>
+            <Pressable
+              ref={logo}
+              onPress={() => setDaysBack(0)}
+              accessibilityRole="button"
+              accessibilityLabel="Go to today"
+              style={{ alignSelf: "flex-start" }}
+            >
               <Wordmark size={32} accent={sky.accent()} base={sky.base} />
-            </View>
+            </Pressable>
             <View
               style={{
                 flexDirection: "row",
@@ -410,6 +421,7 @@ export default function Today() {
                 marginTop: 4,
               }}
             >
+              {dayStepper}
               <Text
                 style={{
                   fontFamily: font.regular,
@@ -419,7 +431,6 @@ export default function Today() {
               >
                 {dayLabel}
               </Text>
-              {dayStepper}
             </View>
           </View>
           {manage}

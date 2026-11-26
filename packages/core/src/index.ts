@@ -4,6 +4,7 @@ export {
   dayFor,
   deviceTimeZone,
   formatDayHeading,
+  formatDayShort,
   minutesIntoDay,
   type DayKey,
 } from "./day";

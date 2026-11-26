@@ -83,3 +83,13 @@ export function formatDayHeading(day: DayKey, locale = "en-US"): string {
     day: "numeric",
   }).format(new Date(`${day}T12:00:00Z`));
 }
+
+/** A day in short form for the header, e.g. "Tuesday 11/24". */
+export function formatDayShort(day: DayKey, locale = "en-US"): string {
+  const weekday = new Intl.DateTimeFormat(locale, {
+    timeZone: "UTC",
+    weekday: "long",
+  }).format(new Date(`${day}T12:00:00Z`));
+  const [, month, date] = day.split("-").map(Number);
+  return `${weekday} ${month}/${date}`;
+}
