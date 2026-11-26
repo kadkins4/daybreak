@@ -11,7 +11,7 @@ import {
   type DayWeather,
   type Palette,
   type SunTimes,
-} from "@hub/core";
+} from "@today/core";
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 
 import { useNow } from "./clock";
@@ -21,7 +21,7 @@ interface Sky {
   now: Date;
   /** Minutes since local midnight. */
   minutes: number;
-  /** The Hub's day, which changes at 4:00 am. */
+  /** Today's day, which changes at 4:00 am. */
   today: DayKey;
   weather: DayWeather | null;
   /** True when the weather is for the fallback place, not where she is. */

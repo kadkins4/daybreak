@@ -14,6 +14,6 @@ export async function writeJson(key: string, value: unknown): Promise<void> {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // Storage can be full or blocked. The Hub still works without it.
+    // Storage can be full or blocked. Today still works without it.
   }
 }

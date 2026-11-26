@@ -6,7 +6,7 @@ import {
   moonPhase,
   weatherAt,
   type Habit,
-} from "@hub/core";
+} from "@today/core";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
@@ -23,7 +23,7 @@ import { HabitRow, HabitSquare } from "@/components/HabitTiles";
 import { Icon } from "@/components/Icon";
 import { SunDial } from "@/components/SunDial";
 import { ComingButtons, PlaceholderTile } from "@/components/TodayParts";
-import { useHubData } from "@/lib/hub-data";
+import { useTodayData } from "@/lib/today-data";
 import { useSky } from "@/lib/sky";
 import { color, font, tile } from "@/lib/ui";
 import { usePageTitle } from "@/lib/title";
@@ -169,7 +169,7 @@ export default function Today() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const sky = useSky();
-  const hub = useHubData();
+  const data = useTodayData();
 
   // Zero is today. One is yesterday, and so on back.
   const [daysBack, setDaysBack] = useState(0);
@@ -200,7 +200,7 @@ export default function Today() {
   // Shown only while taps cannot be sent. It floats over the page, so
   // nothing moves when it comes and goes.
   const waiting =
-    hub.waiting > 0 ? (
+    data.waiting > 0 ? (
       <View
         pointerEvents="none"
         accessibilityLiveRegion="polite"
@@ -221,7 +221,7 @@ export default function Today() {
               color: color.muted,
             }}
           >
-            Offline. {hub.waiting} {hub.waiting === 1 ? "change" : "changes"}{" "}
+            Offline. {data.waiting} {data.waiting === 1 ? "change" : "changes"}{" "}
             will send when you reconnect.
           </Text>
         </View>
@@ -238,19 +238,19 @@ export default function Today() {
 
   const tileProps = (habit: Habit) => ({
     habit,
-    count: hub.countFor(habit.id, day),
-    streak: hub.streakFor(habit, sky.today),
-    onChange: (count: number) => hub.setCount(habit.id, day, count),
+    count: data.countFor(habit.id, day),
+    streak: data.streakFor(habit, sky.today),
+    onChange: (count: number) => data.setCount(habit.id, day, count),
   });
 
   const notice =
-    hub.status === "error" ? (
+    data.status === "error" ? (
       <Text
         style={{ fontFamily: font.regular, fontSize: 15, color: color.muted }}
       >
         Your Habits could not be loaded. Check the connection and reload.
       </Text>
-    ) : hub.status === "ready" && hub.habits.length === 0 ? (
+    ) : data.status === "ready" && data.habits.length === 0 ? (
       <Text
         style={{ fontFamily: font.regular, fontSize: 15, color: color.muted }}
       >
@@ -262,7 +262,7 @@ export default function Today() {
     const habitRows = (
       <>
         {notice}
-        {hub.habits.map((habit) => (
+        {data.habits.map((habit) => (
           <HabitRow key={habit.id} {...tileProps(habit)} />
         ))}
       </>
@@ -346,7 +346,7 @@ export default function Today() {
 
             <View style={{ width: 320, gap: 12 }}>
               {/* Up to five rows share the height. More than that scroll. */}
-              {hub.habits.length > 5 ? (
+              {data.habits.length > 5 ? (
                 <ScrollView
                   style={{ flex: 1 }}
                   contentContainerStyle={{ flexGrow: 1, gap: 12 }}
@@ -432,7 +432,7 @@ export default function Today() {
 
         {notice}
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
-          {hub.habits.map((habit) => (
+          {data.habits.map((habit) => (
             <HabitSquare key={habit.id} width={square} {...tileProps(habit)} />
           ))}
         </View>

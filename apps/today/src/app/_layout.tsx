@@ -30,7 +30,7 @@ function Screens() {
         <Stack.Screen name="(app)" />
       </Stack.Protected>
       <Stack.Protected guard={session === null}>
-        <Stack.Screen name="sign-in" options={{ title: "Sign in · Hub" }} />
+        <Stack.Screen name="sign-in" options={{ title: "Sign in · Today" }} />
       </Stack.Protected>
     </Stack>
   );
@@ -59,7 +59,7 @@ export default function RootLayout() {
       document.head.appendChild(element);
     };
     add("link", { rel: "apple-touch-icon", href: "/apple-touch-icon.png" });
-    add("meta", { name: "apple-mobile-web-app-title", content: "Hub" });
+    add("meta", { name: "apple-mobile-web-app-title", content: "Today" });
   }, []);
 
   if (!ready) return <View style={{ flex: 1, backgroundColor: BASE }} />;
@@ -76,7 +76,7 @@ export default function RootLayout() {
         }}
       >
         <Text style={{ color: color.text, fontSize: 18, textAlign: "center" }}>
-          The Hub is not connected to its backend yet. Set
+          Today is not connected to its backend yet. Set
           EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
           then rebuild.
         </Text>

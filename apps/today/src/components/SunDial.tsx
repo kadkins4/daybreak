@@ -5,7 +5,7 @@ import {
   type MoonPhase,
   type Palette,
   type SunTimes,
-} from "@hub/core";
+} from "@today/core";
 import type { ReactNode } from "react";
 import { View } from "react-native";
 import Svg, {

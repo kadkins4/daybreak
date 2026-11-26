@@ -1,4 +1,4 @@
-import { STOPS, css } from "@hub/core";
+import { STOPS, css } from "@today/core";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
@@ -28,7 +28,7 @@ const fieldLabel = {
 } as const;
 
 export default function SignIn() {
-  usePageTitle("Sign in · Hub");
+  usePageTitle("Sign in · Today");
   const { signIn } = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,7 +65,7 @@ export default function SignIn() {
           accessibilityRole="header"
           style={{ fontFamily: font.semibold, fontSize: 32, color: color.text }}
         >
-          Hub
+          Today
         </Text>
         <Text
           style={{
@@ -76,7 +76,7 @@ export default function SignIn() {
             marginBottom: 24,
           }}
         >
-          Sign in to see Today.
+          Sign in to see your day.
         </Text>
 
         <Text style={fieldLabel} nativeID="email-label">

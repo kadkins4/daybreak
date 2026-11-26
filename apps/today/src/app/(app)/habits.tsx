@@ -1,4 +1,4 @@
-import type { Habit, HabitType } from "@hub/core";
+import type { Habit, HabitType } from "@today/core";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Glow } from "@/components/Glow";
 import { Icon, habitIcon, type IconName } from "@/components/Icon";
-import { useHubData, type HabitInput } from "@/lib/hub-data";
+import { useTodayData, type HabitInput } from "@/lib/today-data";
 import { useSession } from "@/lib/session";
 import { useSky } from "@/lib/sky";
 import { color, font, label, tile } from "@/lib/ui";
@@ -269,7 +269,7 @@ export default function ManageHabits() {
   usePageTitle("Habits");
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const hub = useHubData();
+  const data = useTodayData();
   const { signOut } = useSession();
 
   // The id of the Habit being edited, "new" while adding, or null.
@@ -309,7 +309,7 @@ export default function ManageHabits() {
           </Text>
         </View>
 
-        {hub.habits.map((habit, index) => (
+        {data.habits.map((habit, index) => (
           <View key={habit.id} style={[tile(26), { padding: 16, gap: 14 }]}>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
@@ -343,13 +343,13 @@ export default function ManageHabits() {
                 icon="up"
                 label={`Move ${habit.name} up`}
                 disabled={index === 0}
-                onPress={() => void hub.moveHabit(habit.id, -1)}
+                onPress={() => void data.moveHabit(habit.id, -1)}
               />
               <IconButton
                 icon="down"
                 label={`Move ${habit.name} down`}
-                disabled={index === hub.habits.length - 1}
-                onPress={() => void hub.moveHabit(habit.id, 1)}
+                disabled={index === data.habits.length - 1}
+                onPress={() => void data.moveHabit(habit.id, 1)}
               />
             </View>
             {editing === habit.id ? (
@@ -357,7 +357,7 @@ export default function ManageHabits() {
                 habit={habit}
                 onCancel={() => setEditing(null)}
                 onSave={async (input) => {
-                  const failed = await hub.updateHabit(habit.id, {
+                  const failed = await data.updateHabit(habit.id, {
                     name: input.name,
                     shortName: input.shortName,
                     ...(habit.type === "increment"
@@ -373,7 +373,7 @@ export default function ManageHabits() {
                 <TextButton title="Edit" onPress={() => setEditing(habit.id)} />
                 <TextButton
                   title="Archive"
-                  onPress={() => void hub.setArchived(habit.id, true)}
+                  onPress={() => void data.setArchived(habit.id, true)}
                 />
               </View>
             )}
@@ -387,7 +387,7 @@ export default function ManageHabits() {
               <HabitForm
                 onCancel={() => setEditing(null)}
                 onSave={async (input) => {
-                  const failed = await hub.addHabit(input);
+                  const failed = await data.addHabit(input);
                   if (!failed) setEditing(null);
                   return failed;
                 }}
@@ -412,10 +412,10 @@ export default function ManageHabits() {
           )}
         </View>
 
-        {hub.archivedHabits.length > 0 ? (
+        {data.archivedHabits.length > 0 ? (
           <View style={[tile(26), { padding: 16, gap: 12 }]}>
             <Text style={label}>Archived</Text>
-            {hub.archivedHabits.map((habit) => (
+            {data.archivedHabits.map((habit) => (
               <View
                 key={habit.id}
                 style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
@@ -426,7 +426,7 @@ export default function ManageHabits() {
                 </View>
                 <TextButton
                   title="Restore"
-                  onPress={() => void hub.setArchived(habit.id, false)}
+                  onPress={() => void data.setArchived(habit.id, false)}
                 />
               </View>
             ))}

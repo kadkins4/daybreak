@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 
 /**
- * The Hub's clock. On the web it can be overridden from the address bar for
+ * Today's clock. On the web it can be overridden from the address bar for
  * testing: `?at=2026-11-25T16:30` starts the clock at that local time, and
  * `?speed=600` makes it run that many times faster.
  */

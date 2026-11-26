@@ -15,7 +15,7 @@ create table public.habits (
 
 create index habits_user_position on public.habits (user_id, position);
 
--- One row per Habit per day. The day is the Hub's day (4:00 am rollover),
+-- One row per Habit per day. The day is Today's day (4:00 am rollover),
 -- worked out on the screen that made the tap.
 create table public.habit_entries (
   habit_id uuid not null references public.habits (id) on delete cascade,

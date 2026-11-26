@@ -1,10 +1,10 @@
 {
-  "name": "the-hub",
+  "name": "today",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter hub web",
-    "build:web": "pnpm --filter hub build:web",
+    "dev": "pnpm --filter today-app web",
+    "build:web": "pnpm --filter today-app build:web",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
     "format": "prettier --write .",

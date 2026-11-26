@@ -1,6 +1,6 @@
 # Design
 
-How the Hub looks and how Today is laid out. Build to this.
+How Today looks and how the Today screen is laid out. Build to this.
 
 The visual reference is a Claude design canvas (private to Kendall):
 https://claude.ai/artifact/Sj9jTyP6V55THKCPcizVQ8

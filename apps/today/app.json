@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Hub",
-    "slug": "the-hub",
+    "name": "Today",
+    "slug": "today",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,7 +26,7 @@
       "themeColor": "#0b0a09"
     },
     "plugins": ["expo-router", "expo-font", "expo-splash-screen"],
-    "scheme": "thehub",
+    "scheme": "today",
     "backgroundColor": "#0b0a09"
   }
 }

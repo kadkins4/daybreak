@@ -5,7 +5,7 @@ import {
   type DayKey,
   type Habit,
   type HabitType,
-} from "@hub/core";
+} from "@today/core";
 import {
   createContext,
   useCallback,
@@ -57,7 +57,7 @@ export interface HabitInput {
   dailyNumber: number;
 }
 
-export interface HubData {
+export interface TodayData {
   status: "loading" | "ready" | "error";
   /** Active Habits in their chosen order. */
   habits: Habit[];
@@ -77,7 +77,7 @@ export interface HubData {
   setArchived: (id: string, archived: boolean) => Promise<void>;
 }
 
-export const HubDataContext = createContext<HubData | null>(null);
+export const TodayDataContext = createContext<TodayData | null>(null);
 
 const entryKey = (habitId: string, day: DayKey) => `${habitId}|${day}`;
 
@@ -123,14 +123,14 @@ async function fetchCounts(): Promise<Counts> {
   }
 }
 
-export function HubDataProvider({
+export function TodayDataProvider({
   userId,
   children,
 }: {
   userId: string;
   children: ReactNode;
 }) {
-  const [status, setStatus] = useState<HubData["status"]>("loading");
+  const [status, setStatus] = useState<TodayData["status"]>("loading");
   const [allHabits, setAllHabits] = useState<Habit[]>([]);
   const [counts, setCounts] = useState<Counts>({});
   const [outbox, setOutboxState] = useState<Outbox>({});
@@ -145,8 +145,8 @@ export function HubDataProvider({
   const retry = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasData = useRef(false);
 
-  const snapshotKey = `hub.snapshot.${userId}`;
-  const outboxKey = `hub.outbox.${userId}`;
+  const snapshotKey = `today.snapshot.${userId}`;
+  const outboxKey = `today.outbox.${userId}`;
 
   const setOutbox = useCallback(
     (next: Outbox) => {
@@ -290,7 +290,7 @@ export function HubDataProvider({
   useEffect(() => {
     let subscribedBefore = false;
     const channel = supabase
-      .channel(`hub-${userId}`)
+      .channel(`today-${userId}`)
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "habit_entries" },
@@ -359,7 +359,7 @@ export function HubDataProvider({
     return done;
   }, [allHabits, merged]);
 
-  const value = useMemo<HubData>(() => {
+  const value = useMemo<TodayData>(() => {
     const active = allHabits
       .filter((habit) => !habit.archived)
       .sort((a, b) => a.position - b.position);
@@ -455,12 +455,15 @@ export function HubDataProvider({
   }, [status, allHabits, merged, doneDays, outbox, offline, setOutbox, send]);
 
   return (
-    <HubDataContext.Provider value={value}>{children}</HubDataContext.Provider>
+    <TodayDataContext.Provider value={value}>
+      {children}
+    </TodayDataContext.Provider>
   );
 }
 
-export function useHubData(): HubData {
-  const value = useContext(HubDataContext);
-  if (!value) throw new Error("useHubData must be used inside HubDataProvider");
+export function useTodayData(): TodayData {
+  const value = useContext(TodayDataContext);
+  if (!value)
+    throw new Error("useTodayData must be used inside TodayDataProvider");
   return value;
 }
