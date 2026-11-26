@@ -22,6 +22,7 @@ import { Glow } from "@/components/Glow";
 import { HabitRow, HabitSquare } from "@/components/HabitTiles";
 import { Icon } from "@/components/Icon";
 import { SunDial } from "@/components/SunDial";
+import { Wordmark } from "@/components/Wordmark";
 import { ComingButtons, PlaceholderTile } from "@/components/TodayParts";
 import { useTodayData } from "@/lib/today-data";
 import { useSky } from "@/lib/sky";
@@ -176,8 +177,8 @@ export default function Today() {
   const day = addDays(sky.today, -daysBack);
   const wide = width >= 900;
 
-  const title =
-    daysBack === 0 ? "Today" : daysBack === 1 ? "Yesterday" : "Earlier";
+  // Yesterday is named. Any other day shows its date.
+  const dayLabel = daysBack === 1 ? "Yesterday" : formatDayHeading(day);
 
   const dayStepper = (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
@@ -286,17 +287,7 @@ export default function Today() {
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 16 }}
             >
-              <Text
-                accessibilityRole="header"
-                style={{
-                  fontFamily: font.semibold,
-                  fontSize: 36,
-                  lineHeight: 44,
-                  color: color.text,
-                }}
-              >
-                {title}
-              </Text>
+              <Wordmark size={36} accent={sky.accent()} base={sky.base} />
               <Text
                 style={{
                   fontFamily: font.regular,
@@ -305,7 +296,7 @@ export default function Today() {
                   marginTop: 10,
                 }}
               >
-                {formatDayHeading(day)}
+                {dayLabel}
               </Text>
               <View style={{ marginTop: 8 }}>{dayStepper}</View>
             </View>
@@ -390,17 +381,7 @@ export default function Today() {
           }}
         >
           <View>
-            <Text
-              accessibilityRole="header"
-              style={{
-                fontFamily: font.semibold,
-                fontSize: 32,
-                lineHeight: 38,
-                color: color.text,
-              }}
-            >
-              {title}
-            </Text>
+            <Wordmark size={32} accent={sky.accent()} base={sky.base} />
             <View
               style={{
                 flexDirection: "row",
@@ -416,7 +397,7 @@ export default function Today() {
                   color: color.muted,
                 }}
               >
-                {formatDayHeading(day)}
+                {dayLabel}
               </Text>
               {dayStepper}
             </View>

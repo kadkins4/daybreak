@@ -2,6 +2,7 @@ import { STOPS, css } from "@today/core";
 import { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
+import { Wordmark } from "@/components/Wordmark";
 import { useSession } from "@/lib/session";
 import { color, font, tile, web } from "@/lib/ui";
 import { usePageTitle } from "@/lib/title";
@@ -61,12 +62,7 @@ export default function SignIn() {
       ]}
     >
       <View style={[tile(28), { width: "100%", maxWidth: 380, padding: 28 }]}>
-        <Text
-          accessibilityRole="header"
-          style={{ fontFamily: font.semibold, fontSize: 32, color: color.text }}
-        >
-          Today
-        </Text>
+        <Wordmark size={32} accent={css(morning.accent)} base="#1a1715" />
         <Text
           style={{
             fontFamily: font.regular,
