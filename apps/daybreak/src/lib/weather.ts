@@ -14,10 +14,10 @@ interface Saved {
 
 const round2 = (value: number) => Math.round(value * 100) / 100;
 
-type Position = { latitude: number; longitude: number };
+export type Position = { latitude: number; longitude: number };
 
 /** His current position, or null when the browser does not share it. */
-async function currentPosition(): Promise<Position | null> {
+export async function currentPosition(): Promise<Position | null> {
   // On the web, ask the browser directly. That is what makes it show its
   // own "allow location" prompt.
   if (Platform.OS === "web") {

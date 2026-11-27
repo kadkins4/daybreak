@@ -18,7 +18,7 @@ A Journey table and a Current Airport setting, each row locked to its owner, as 
 - **Done when:** a fresh database builds from the repo, and a signed-out request can read nothing.
 - **Blocked by:** nothing. Can run alongside 1.
 
-### 3. The map
+### 3. The map (done)
 
 Add MapLibre as a web-only component, on OpenFreeMap tiles, recolored to the sun colors. The Journey button on Today opens a full-screen map with pan and zoom, centered on the Current Airport. The first time, the Current Airport is the one nearest his real location, or one he picks by hand.
 

@@ -25,6 +25,7 @@ import { Icon } from "@/components/Icon";
 import { Splash } from "@/components/Splash";
 import { SunDial } from "@/components/SunDial";
 import { Wordmark } from "@/components/Wordmark";
+import { RoundButton } from "@/components/RoundButton";
 import { ComingButtons, PlaceholderTile } from "@/components/TodayParts";
 import { useDaybreakData } from "@/lib/daybreak-data";
 import { useSky } from "@/lib/sky";
@@ -33,43 +34,6 @@ import { usePageTitle } from "@/lib/title";
 
 const TASKS_MESSAGE = "Your top three Tasks will show here.";
 const EVENTS_MESSAGE = "Your next events will show here.";
-
-/** A round glass button with one icon. */
-function RoundButton({
-  icon,
-  label,
-  onPress,
-  disabled,
-  size = 46,
-}: {
-  icon: "left" | "right" | "list";
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-  size?: number;
-}) {
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      hitSlop={(44 - Math.min(44, size)) / 2}
-      style={({ pressed }) => [
-        tile(size / 2),
-        {
-          width: size,
-          height: size,
-          alignItems: "center",
-          justifyContent: "center",
-          opacity: disabled ? 0.3 : pressed ? 0.7 : 1,
-        },
-      ]}
-    >
-      <Icon name={icon} size={size >= 44 ? 20 : 16} color={color.text} />
-    </Pressable>
-  );
-}
 
 /** The weather, shown inside the Sun Dial. */
 function DialWeather({ scale }: { scale: number }) {

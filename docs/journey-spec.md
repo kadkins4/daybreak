@@ -86,6 +86,7 @@ Time left is worked out from the banked flying time and the last resume, so ever
 ## Build notes
 
 - The map is MapLibre on OpenFreeMap tiles. See `docs/adr/0010-journey-maps-use-maplibre-on-openstreetmap-tiles.md`.
+- MapLibre is held at version 5. Version 6 loads its background worker in a way the app's bundler cannot package.
 - The map needs a connection to load. If the tiles fail, the flight still runs and the strip still counts down.
 - Airports, distance, flight time, the route, the U-turn and the Diversion rule live in `packages/core` with tests.
 - The two prototypes are in `~/.claude/prototypes/daybreak-journey-map/`: `index.html` for the looks and `flight.html` for the close flight.

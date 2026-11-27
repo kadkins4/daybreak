@@ -18,6 +18,10 @@ export default function AppLayout() {
         >
           <Stack.Screen name="index" options={{ title: "Daybreak" }} />
           <Stack.Screen
+            name="journey"
+            options={{ title: "Journey · Daybreak" }}
+          />
+          <Stack.Screen
             name="habits"
             options={{ title: "Habits · Daybreak" }}
           />

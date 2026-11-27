@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 
 import { useSky } from "@/lib/sky";
 import { color, font, label, tile } from "@/lib/ui";
@@ -36,7 +37,7 @@ export function PlaceholderTile({
   );
 }
 
-/** Morning Drive and Journey. Disabled until their milestones. */
+/** A button for something that is not built yet. */
 export function ComingButton({
   name,
   spokenName,
@@ -94,7 +95,9 @@ export function ComingButton({
   );
 }
 
+/** Morning Drive, which is not built yet, and Journey. */
 export function ComingButtons() {
+  const router = useRouter();
   return (
     <View style={{ flexDirection: "row", gap: 12 }}>
       <ComingButton
@@ -103,7 +106,42 @@ export function ComingButtons() {
         icon="play"
         filled
       />
-      <ComingButton name="Journey" spokenName="Journey" icon="journey" />
+      <Pressable
+        onPress={() => router.push("/journey")}
+        accessibilityRole="button"
+        accessibilityLabel="Journey"
+        style={({ pressed }) => [
+          tile(24),
+          {
+            height: 64,
+            flexGrow: 1,
+            flexBasis: 0,
+            paddingHorizontal: 16,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            opacity: pressed ? 0.7 : 1,
+          },
+        ]}
+      >
+        <View
+          style={{
+            width: 38,
+            height: 38,
+            borderRadius: 19,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: color.chip,
+          }}
+        >
+          <Icon name="journey" size={18} color={color.text} />
+        </View>
+        <Text
+          style={{ fontFamily: font.semibold, fontSize: 16, color: color.text }}
+        >
+          Journey
+        </Text>
+      </Pressable>
     </View>
   );
 }

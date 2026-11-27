@@ -1,0 +1,18 @@
+/* The map credit, restyled to sit quietly on Daybreak's dark screen. */
+.maplibregl-ctrl-attrib.maplibregl-compact,
+.maplibregl-ctrl-attrib {
+  background: rgba(26, 23, 21, 0.72);
+  color: #bdb3a8;
+  font-family: Inter_400Regular, system-ui, sans-serif;
+  font-size: 11px;
+}
+.maplibregl-ctrl-attrib a {
+  color: inherit;
+}
+.maplibregl-ctrl-attrib-button {
+  filter: invert(1);
+  opacity: 0.7;
+}
+.maplibregl-canvas:focus {
+  outline: none;
+}
