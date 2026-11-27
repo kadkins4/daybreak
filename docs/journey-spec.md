@@ -46,7 +46,7 @@ Terms in capitals are defined in `GLOSSARY.md`. The decisions here came out of t
 
 - **Flight time** is one formula on the straight-line distance between two airports: 12 minutes plus the miles divided by 500 mph, rounded to the minute. Baltimore to Philadelphia is 23 minutes. There is no upper limit.
 - **The destination sets the length.** A length that matches no airport is flown as a Round Trip.
-- **A Round Trip** takes off from the Current Airport, flies out, makes a real U-turn and lands where it started. It can be any length from 5 minutes up. The heading is picked for him, toward a different airport each time, so the route stays over land. It adds Miles and does not change the Current Airport.
+- **A Round Trip** takes off from the Current Airport, flies out, makes a real U-turn and lands where it started. It can be any length from 5 minutes up. The heading is picked for him, toward a different airport each time, so the route stays over land. It adds Miles and does not change the Current Airport. Its Miles come from the flight-time formula run backwards, and never fewer than 2.5 miles a minute, so a 5 minute trip still covers 12.5 miles.
 - **Takeoff and landing are inside the flight time.** The first 30 seconds are the takeoff and the last 45 seconds are the landing. Touchdown is zero on the clock.
 - **Landing is automatic.** It happens when the time runs out, even if the flight is minimized or Daybreak is closed. The summary waits until he next opens Daybreak. There is no "keep going": more focus is another Journey.
 - **Pause** freezes the flight on every screen. The map stops and the sound stops. Only flying time counts toward the flight.
@@ -72,13 +72,14 @@ Terms in capitals are defined in `GLOSSARY.md`. The decisions here came out of t
 ## Sound
 
 - Made in the browser, with no audio files: a roar at takeoff that settles into a low engine hum, and an occasional two-tone attendant chime. A chime at landing.
-- Plays on any screen showing the flight. Mute is remembered per screen.
+- Plays on the screen where the ticket was punched, and keeps playing when the flight is minimized. Mute is remembered per screen.
+- Stops while the flight is paused.
 - Browsers only allow sound after a tap, so a screen that joins a flight already in progress starts muted.
 
 ## Data
 
 - **Airport:** code, name, city, latitude, longitude and a size. A fixed list shipped with the app, built from the public-domain OurAirports data.
-- **Journey:** Mode, origin, destination (none for a Round Trip), outbound heading (Round Trip only), planned length, planned miles, focus text, status (flying, paused, landed or diverted), takeoff time, flying time banked at the last pause, time of the last resume, end time, the airport landed at, Miles earned, and his real location at takeoff.
+- **Journey:** Mode, origin, destination (none for a Round Trip), outbound heading (Round Trip only), planned length, planned miles, focus text, status (flying, paused, landed or diverted), takeoff time, flying time banked at the last pause, time of the last resume, time of the last pause, end time, the airport landed at, Miles earned, and his real location at takeoff.
 - **Settings:** the Current Airport.
 
 Time left is worked out from the banked flying time and the last resume, so every screen agrees and nothing ticks in the database. Totals are calculated from Journeys, not stored.
@@ -89,6 +90,8 @@ Time left is worked out from the banked flying time and the last resume, so ever
 - MapLibre is held at version 5. Version 6 loads its background worker in a way the app's bundler cannot package.
 - The map needs a connection to load. If the tiles fail, the flight still runs and the strip still counts down.
 - Airports, distance, flight time, the route, the U-turn and the Diversion rule live in `packages/core` with tests.
+- The landing summary shows once on each screen, for up to 18 hours after the landing. Which summaries a screen has shown is kept on that screen.
+- For testing, `?fly=60` in the address makes flights run sixty times faster on that screen.
 - The two prototypes are in `~/.claude/prototypes/daybreak-journey-map/`: `index.html` for the looks and `flight.html` for the close flight.
 - The picker and the ticket are our own designs. Other focus apps use a flight theme too, and none of their artwork or layouts are copied.
 

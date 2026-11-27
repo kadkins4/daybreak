@@ -1,6 +1,6 @@
 # Journey Tickets
 
-Thirteen tickets that build `docs/journey-spec.md`. Each one is a thin slice that can be run and seen working when it is done. Work them in order unless "Blocked by" says two can run side by side.
+Thirteen tickets that build `docs/journey-spec.md`. All thirteen are built. Tickets 5 to 13 were checked on a laptop with a local copy of the data, and still need Kenny's run through signed in: two screens in sync, sound, and the length wheels by touch. Each one is a thin slice that can be run and seen working when it is done. Work them in order unless "Blocked by" says two can run side by side.
 
 ## Foundation
 
@@ -34,28 +34,28 @@ Airport dots and labels on the map. Tapping one shows its time and miles on a ca
 - **Done when:** Washington National, Dulles and Baltimore can each be picked on a phone, and a 45 minute ring from San Diego highlights Las Vegas.
 - **Blocked by:** 3.
 
-### 5. Ticket and takeoff
+### 5. Ticket and takeoff (done)
 
 The ticket screen with the optional focus line. Punching it saves a flying Journey.
 
 - **Done when:** a punched ticket survives a page refresh as a Journey in flight.
 - **Blocked by:** 2, 4.
 
-### 6. The flight
+### 6. The flight (done)
 
 The close map following the plane, the bottom strip, town and airport names, the compass switch, the tap to see the whole route, and the takeoff and landing animations.
 
 - **Done when:** a 23 minute flight to Philadelphia can be watched from takeoff to touchdown, and it is smooth at 1280 by 720.
 - **Blocked by:** 5.
 
-### 7. Landing and Miles
+### 7. Landing and Miles (done)
 
 The flight lands by itself, shows the summary, moves the Current Airport and adds to the totals. A flight that ends while Daybreak is closed lands on time and shows its summary on the next open.
 
 - **Done when:** the next Journey starts from the airport just landed at, and the totals are right after two flights.
 - **Blocked by:** 6.
 
-### 8. Minimize and sync
+### 8. Minimize and sync (done)
 
 A minimize button back to Today. Today's Journey button shows the time left. A second screen shows the same flight.
 
@@ -64,14 +64,14 @@ A minimize button back to Today. Today's Journey button shows the time left. A s
 
 ## Interruptions
 
-### 9. Pause
+### 9. Pause (done)
 
 Pause and resume, shared across screens. Only flying time counts. A paused Journey ends at day rollover.
 
 - **Done when:** pausing on the phone freezes the laptop, and time left is the same on both after resuming.
 - **Blocked by:** 8.
 
-### 10. Ending early
+### 10. Ending early (done)
 
 The Diversion rule in the shared package, and the two-tap message that names the landing airport and the Miles.
 
@@ -80,21 +80,21 @@ The Diversion rule in the shared package, and the two-tap message that names the
 
 ## Finishing
 
-### 11. Sound
+### 11. Sound (done)
 
 The takeoff roar, the engine hum, the attendant chime and the landing chime, made in the browser. A mute button remembered per screen.
 
 - **Done when:** the hum loops for 30 minutes with no audible seam, stops on pause, and mute holds after a refresh.
 - **Blocked by:** 6. Can run alongside 7 to 10.
 
-### 12. Round Trips
+### 12. Round Trips (done)
 
 The Round Trip offer in the length picker, the outbound heading toward a different airport each time, the U-turn path, and landing back at the start.
 
 - **Done when:** a 20 minute Round Trip shows the turn, lands where it started, adds Miles and leaves the Current Airport alone.
 - **Blocked by:** 7.
 
-### 13. "Have you moved?"
+### 13. "Have you moved?" (done)
 
 Save his real location at takeoff. Ask on opening Journey when he is more than 100 miles from it.
 

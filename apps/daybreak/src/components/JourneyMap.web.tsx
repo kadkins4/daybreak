@@ -1,13 +1,22 @@
-import { css, placeAt, routePoint, type Rgb } from "@daybreak/core";
+import { css, placeAt, routePoint } from "@daybreak/core";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./JourneyMap.css";
 import { useEffect, useRef, useState } from "react";
 
 import type { JourneyMapProps } from "./JourneyMap";
+import {
+  BLACK,
+  NO_LINE,
+  STYLE,
+  TEXT,
+  expr,
+  line,
+  mix,
+  source,
+  type Collection,
+} from "./mapKit";
 
-// Free OpenStreetMap tiles from OpenFreeMap. See docs/adr/0010.
-const STYLE = "https://tiles.openfreemap.org/styles/dark";
 // A little wider than the lower 48, so the map cannot be dragged off them.
 const BOUNDS: [[number, number], [number, number]] = [
   [-135, 17],
@@ -23,31 +32,7 @@ const NEAR = `${OURS}near`;
 const CHOSEN = `${OURS}chosen`;
 const LABELS = `${OURS}labels`;
 
-const mix = (from: Rgb, to: Rgb, amount: number): Rgb => [
-  from[0] + (to[0] - from[0]) * amount,
-  from[1] + (to[1] - from[1]) * amount,
-  from[2] + (to[2] - from[2]) * amount,
-];
-
-const BLACK: Rgb = [0, 0, 0];
-const TEXT: Rgb = [246, 241, 234];
-
 type Palette = JourneyMapProps["palette"];
-type Line = {
-  type: "Feature";
-  properties: Record<string, never>;
-  geometry: { type: "LineString"; coordinates: [number, number][] };
-};
-type Collection = Parameters<maplibregl.GeoJSONSource["setData"]>[0];
-/** Marks a hand-written map expression as one. */
-const expr = (value: unknown) => value as maplibregl.ExpressionSpecification;
-
-const line = (coordinates: [number, number][]): Line => ({
-  type: "Feature",
-  properties: {},
-  geometry: { type: "LineString", coordinates },
-});
-const NO_LINE = line([]);
 
 const waterOf = (palette: Palette) => css(mix(palette.base, BLACK, 0.45));
 
@@ -224,9 +209,6 @@ function hereDot(): HTMLDivElement {
   return dot;
 }
 
-const source = (map: maplibregl.Map, id: string) =>
-  map.getSource(id) as maplibregl.GeoJSONSource | undefined;
-
 export function JourneyMap({
   centre,
   here,
@@ -235,6 +217,7 @@ export function JourneyMap({
   selected,
   onSelect,
   ring,
+  trip,
   padding,
 }: JourneyMapProps) {
   const clear = useRef(padding);
@@ -392,6 +375,21 @@ export function JourneyMap({
       "symbol-sort-key",
       expr(["case", isChosen, -1, ["-", 3, ["get", "size"]]])
     );
+    if (trip && here && !chosen) {
+      // A Round Trip: out, around and back.
+      const bounds = new maplibregl.LngLatBounds();
+      const path = trip.map((place): [number, number] => {
+        bounds.extend([place.longitude, place.latitude]);
+        return [place.longitude, place.latitude];
+      });
+      source(map, ROUTE)?.setData(line(path));
+      map.fitBounds(bounds, {
+        padding: clear.current,
+        maxZoom: 9.5,
+        duration: 900,
+      });
+      return;
+    }
     if (!chosen || !here) {
       source(map, ROUTE)?.setData(NO_LINE);
       return;
@@ -423,7 +421,7 @@ export function JourneyMap({
         duration: 900,
       });
     }
-  }, [map, flights, selected, here]);
+  }, [map, flights, selected, here, trip]);
 
   // The ring a chosen length reaches, and the airports near it.
   const ringMiles = ring?.miles ?? null;

@@ -35,7 +35,7 @@ export function airportFor(code: string): Airport | undefined {
   return byCode.get(code.toUpperCase());
 }
 
-const EARTH_MILES = 3958.8;
+export const EARTH_MILES = 3958.8;
 const CRUISE_MPH = 500;
 /** Minutes a flight spends climbing and coming down, whatever its length. */
 const CLIMB_AND_DESCENT_MINUTES = 12;

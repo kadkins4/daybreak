@@ -35,3 +35,18 @@ export function useNow(): Date {
   }, []);
   return value;
 }
+
+/**
+ * The clock Journeys fly by: the real time, which is what other screens
+ * and the database use. For testing on the web, `?fly=60` makes it run
+ * sixty times faster on this screen, so a flight can be watched in seconds.
+ */
+const flySpeed =
+  Platform.OS === "web" && typeof window !== "undefined"
+    ? Number(new URLSearchParams(window.location.search).get("fly") ?? "1")
+    : 1;
+
+export function flightNow(): number {
+  if (!(flySpeed > 1)) return Date.now();
+  return bootedAt + (Date.now() - bootedAt) * flySpeed;
+}

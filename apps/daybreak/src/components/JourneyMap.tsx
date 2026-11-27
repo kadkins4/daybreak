@@ -20,6 +20,8 @@ export interface JourneyMapProps {
    * and longest flights in minutes that count as near it.
    */
   ring: { miles: number; low: number; high: number } | null;
+  /** The path of a chosen Round Trip, drawn when no airport is chosen. */
+  trip: Place[] | null;
   /** Screen edges covered by the bar and the cards, kept clear of the route. */
   padding: { top: number; bottom: number; left: number; right: number };
 }

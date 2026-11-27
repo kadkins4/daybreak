@@ -1,6 +1,10 @@
+import { airportFor, formatFlightTime, secondsFlownAt } from "@daybreak/core";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
+import { flightNow } from "@/lib/clock";
+import { useJourneys } from "@/lib/journey";
 import { useSky } from "@/lib/sky";
 import { color, font, label, tile } from "@/lib/ui";
 
@@ -95,9 +99,38 @@ export function ComingButton({
   );
 }
 
+/** What the Journey button says while a Journey is on, or just over. */
+function useJourneyNote(): { title: string; detail: string } | null {
+  const { active, summary } = useJourneys();
+  const [, redraw] = useState(0);
+  const flying = active?.status === "flying";
+  useEffect(() => {
+    if (!flying) return;
+    const timer = setInterval(() => redraw((count) => count + 1), 5000);
+    return () => clearInterval(timer);
+  }, [flying]);
+  if (active) {
+    const left = active.plannedSeconds - secondsFlownAt(active, flightNow());
+    return {
+      title: flying ? "In flight" : "Paused",
+      detail:
+        left < 60
+          ? "Under a minute left"
+          : `${formatFlightTime(Math.ceil(left / 60))} left`,
+    };
+  }
+  if (summary) {
+    const city = airportFor(summary.landedAt ?? "")?.city;
+    return { title: "Landed", detail: city ? `In ${city}` : "See the summary" };
+  }
+  return null;
+}
+
 /** Morning Drive, which is not built yet, and Journey. */
 export function ComingButtons() {
   const router = useRouter();
+  const { accent } = useSky();
+  const note = useJourneyNote();
   return (
     <View style={{ flexDirection: "row", gap: 12 }}>
       <ComingButton
@@ -109,7 +142,9 @@ export function ComingButtons() {
       <Pressable
         onPress={() => router.push("/journey")}
         accessibilityRole="button"
-        accessibilityLabel="Journey"
+        accessibilityLabel={
+          note ? `Journey. ${note.title}, ${note.detail}` : "Journey"
+        }
         style={({ pressed }) => [
           tile(24),
           {
@@ -131,16 +166,38 @@ export function ComingButtons() {
             borderRadius: 19,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: color.chip,
+            backgroundColor: note ? accent() : color.chip,
           }}
         >
-          <Icon name="journey" size={18} color={color.text} />
+          <Icon
+            name="journey"
+            size={18}
+            color={note ? color.accentInk : color.text}
+          />
         </View>
-        <Text
-          style={{ fontFamily: font.semibold, fontSize: 16, color: color.text }}
-        >
-          Journey
-        </Text>
+        <View style={{ flexShrink: 1 }}>
+          <Text
+            style={{
+              fontFamily: font.semibold,
+              fontSize: 16,
+              color: color.text,
+            }}
+          >
+            {note?.title ?? "Journey"}
+          </Text>
+          {note ? (
+            <Text
+              numberOfLines={1}
+              style={{
+                fontFamily: font.regular,
+                fontSize: 12,
+                color: color.muted,
+              }}
+            >
+              {note.detail}
+            </Text>
+          ) : null}
+        </View>
       </Pressable>
     </View>
   );

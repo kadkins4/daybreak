@@ -16,6 +16,7 @@ Ideas deliberately parked so they stay out of the current milestone.
 - Letting a Journey tick a Habit
 - Recorded cabin sound for Journeys, and Journey sound through the Device's speaker
 - A tilted, window-seat camera for the flight
+- Moving the Journey map to MapLibre 6. It is held at 5 because 6 ships only as a modern module that loads its worker from a separate file, which Expo's bundler (Metro) could not package in November 2026. Check again when Expo or MapLibre changes how that works, or when version 5 stops getting fixes
 - A demo mode with sample data, for showing Daybreak on the portfolio
 - Settings screen, opened from a button at the top right of Today next to the time. The spot is reserved in the design; the button is left out until the screen exists. First settings: Fahrenheit or Celsius, day rollover time, fallback weather location, and whether colors follow the sun or stay on one palette
 - Moon extras on the dial, such as a blood moon during a total lunar eclipse

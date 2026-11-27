@@ -61,12 +61,23 @@ Journey and the Habit squares all fit on the first screen.
   <img src="docs/images/today-phone.png" alt="Today on a phone: the Sun Dial on top, then Drive and Journey buttons, then four small Habit squares" width="300" />
 </p>
 
+## Journeys
+
+A Journey is a focus session flown as a flight. Pick an airport on the map
+and the flight there sets the length: Baltimore to Philadelphia is 23
+minutes. Punch the ticket and the map follows the plane across real country
+at close range, with engine sound made in the browser.
+
+Any other length is flown as a Round Trip: out, one U-turn and back. A
+flight can be paused, minimized to Today, or ended early, which lands at the
+last airport it passed. The next Journey starts from wherever the last one
+landed, and every screen signed in shows the same flight.
+
 ## What comes next
 
 - **Tasks and events**: Apple Reminders and calendars on Today, with a
   suggested top three for the day.
-- **Journeys**: focus sessions framed as a trip, with calming sound and
-  visuals.
+- **More Journey Modes**: train first.
 - **Morning Drive**: a wake-up mix of real news shows and music.
 - **The Device**: the small plugged-in screen Daybreak is headed for.
 
@@ -81,11 +92,14 @@ sign-in and live sync.
 
 - `apps/daybreak` is the app.
 - `packages/core` is shared logic with tests: day rollover, streaks, moon
-  phase and the colors that follow the sun.
+  phase, the colors that follow the sun, and the airports and flight rules
+  for Journeys.
 - `supabase` holds the database migrations and the weather function.
 
 Weather comes from [Open-Meteo](https://open-meteo.com) and place names from
-[OpenStreetMap](https://www.openstreetmap.org/copyright).
+[OpenStreetMap](https://www.openstreetmap.org/copyright). Journey's map is
+[MapLibre](https://maplibre.org) on [OpenFreeMap](https://openfreemap.org)
+tiles, and its airports come from [OurAirports](https://ourairports.com).
 
 ## Running it
 
@@ -121,4 +135,5 @@ Every push to `main` runs the checks and deploys the web app to Vercel.
 
 To see the colors change without waiting a day, add a test clock to the
 address: `?at=2026-11-25T05:30&speed=3600` starts at 5:30 am and runs an
-hour every second.
+hour every second. To watch a Journey without waiting, add `?fly=60` and
+flights run sixty times faster on that screen.
