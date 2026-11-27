@@ -18,6 +18,29 @@ const LAND_MS = 1300;
 const RISE = "cubic-bezier(.2,.6,.2,1)";
 const SLIDE = "cubic-bezier(.5,0,.2,1)";
 
+/**
+ * The sun's light on the water: how far below the horizon in logo units,
+ * width as a share of the sun's, and strength.
+ */
+const SHIMMER: [number, number, number][] = [
+  [6, 1.25, 0.7],
+  [13, 0.9, 0.5],
+  [21, 0.6, 0.36],
+  [30, 0.34, 0.24],
+];
+
+/**
+ * Still ripples on the water, wider apart the nearer they are: how far below
+ * the horizon in logo units, width as a share of the horizon's, and strength.
+ */
+const RIPPLES: [number, number, number][] = [
+  [17, 0.8, 0.16],
+  [38, 0.62, 0.12],
+  [64, 0.46, 0.09],
+  [96, 0.32, 0.065],
+  [134, 0.2, 0.045],
+];
+
 // The splash plays once each time the app is opened, not on every visit to
 // Today. Someone who asked for less motion never sees it.
 let played =
@@ -39,10 +62,10 @@ const fade = (ms: number, delay = 0) =>
   });
 
 /**
- * The opening screen. A horizon draws, the sun rises over it, the name comes
- * up out of the line, the sun slides in behind the D, and the finished logo
- * goes up to its place in the header as Today appears. It waits on the
- * horizon until Today has loaded.
+ * The opening screen. A horizon draws over still water, the sun rises over
+ * it, the name appears in front of the line, the sun slides in behind the D,
+ * and the finished logo goes up to its place in the header as Today appears.
+ * It waits on the horizon until Today has loaded.
  */
 export function Splash({
   target,
@@ -114,6 +137,9 @@ export function Splash({
   const startY = horizon - 42 * u * scale;
   const lineWidth = markWidth * scale * 1.2;
   const glowWidth = Math.min(width * 1.6, 900);
+  // Where the sun stands once it has risen, and how wide it is there.
+  const sunX = startX + 87 * u * scale;
+  const sunWidth = 32 * u * scale;
 
   return (
     <View
@@ -179,6 +205,98 @@ export function Splash({
               ]}
             />
           </View>
+          {/* The water below the horizon, lit by the sky above it. */}
+          <View
+            style={[
+              {
+                position: "absolute",
+                top: horizon,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                overflow: "hidden",
+                opacity: landing ? 0 : 1,
+              },
+              fade(400),
+            ]}
+          >
+            <View
+              style={[
+                {
+                  position: "absolute",
+                  left: (width - glowWidth) / 2,
+                  top: -glowWidth * 0.22,
+                  width: glowWidth,
+                  height: glowWidth * 0.44,
+                },
+                keyframed({
+                  backgroundImage: `radial-gradient(closest-side, ${glow}, transparent)`,
+                  animationKeyframes: [
+                    { "0%": { opacity: 0 }, "100%": { opacity: 0.42 } },
+                  ],
+                  animationDuration: "2400ms",
+                  animationDelay: "400ms",
+                  animationTimingFunction: "ease-out",
+                  animationFillMode: "both",
+                }),
+              ]}
+            />
+            {RIPPLES.map(([drop, part, strength], index) => (
+              <View
+                key={drop}
+                style={[
+                  {
+                    position: "absolute",
+                    top: drop * u * scale,
+                    left: (width - lineWidth * part) / 2,
+                    width: lineWidth * part,
+                    height: 1,
+                    backgroundColor: color.text,
+                  },
+                  keyframed({
+                    animationKeyframes: [
+                      { "0%": { opacity: 0 }, "100%": { opacity: strength } },
+                    ],
+                    animationDuration: "1400ms",
+                    animationDelay: `${700 + index * 220}ms`,
+                    animationTimingFunction: "ease-out",
+                    animationFillMode: "both",
+                  }),
+                ]}
+              />
+            ))}
+            {/* The sun's light on the water, while it stands over it. */}
+            {SHIMMER.map(([drop, part, strength], index) => (
+              <View
+                key={drop}
+                style={[
+                  {
+                    position: "absolute",
+                    top: drop * u * scale,
+                    left: sunX - (sunWidth * part) / 2,
+                    width: sunWidth * part,
+                    height: 3,
+                    borderRadius: 2,
+                    backgroundColor: accent,
+                  },
+                  keyframed({
+                    animationKeyframes: [
+                      {
+                        "0%": { opacity: 0 },
+                        "30%": { opacity: strength },
+                        "75%": { opacity: strength },
+                        "100%": { opacity: 0 },
+                      },
+                    ],
+                    animationDuration: "2000ms",
+                    animationDelay: `${1000 + index * 90}ms`,
+                    animationTimingFunction: "ease-in-out",
+                    animationFillMode: "both",
+                  }),
+                ]}
+              />
+            ))}
+          </View>
           <View
             style={[
               {
@@ -229,85 +347,74 @@ export function Splash({
               }),
             ]}
           >
-            <View
-              style={[
-                {
-                  position: "absolute",
-                  left: 16 * u,
-                  top: 4 * u,
-                  width: 20 * u,
-                  height: 20 * u,
-                  borderRadius: 10 * u,
-                  backgroundColor: accent,
-                },
-                keyframed({
-                  animationKeyframes: [
-                    {
-                      "0%": {
-                        transform: `translate(${61 * u}px, ${52 * u}px) scale(1.6)`,
-                        animationTimingFunction: RISE,
-                      },
-                      "46%": {
-                        transform: `translate(${61 * u}px, 0px) scale(1.6)`,
-                      },
-                      "69%": {
-                        transform: `translate(${61 * u}px, 0px) scale(1.6)`,
-                        animationTimingFunction: SLIDE,
-                      },
-                      "100%": { transform: "translate(0px, 0px) scale(1)" },
-                    },
-                  ],
-                  animationDuration: "3900ms",
-                  animationDelay: "300ms",
-                  animationFillMode: "both",
-                }),
-              ]}
-            />
-            {/* Hides the sun while it is still below the horizon. */}
-            <View
-              style={[
-                {
-                  position: "absolute",
-                  left: -20 * u,
-                  right: -20 * u,
-                  top: 42 * u,
-                  height: 60 * u,
-                  backgroundColor: base,
-                  opacity: landing ? 0 : 1,
-                },
-                fade(200),
-              ]}
-            />
-            {/* The name, cut off at the horizon until it has risen. */}
+            {/* The sun, cut off at the horizon while it rises. */}
             <View
               style={{
                 position: "absolute",
-                left: -8 * u,
-                top: 0,
-                width: markWidth + 16 * u,
-                height: (landing ? 52 : 42) * u,
+                left: -20 * u,
+                top: -20 * u,
+                width: markWidth + 40 * u,
+                height: (landing ? 72 : 62) * u,
                 overflow: "hidden",
               }}
             >
               <View
                 style={[
-                  { position: "absolute", left: 8 * u, top: 0 },
+                  {
+                    position: "absolute",
+                    left: 36 * u,
+                    top: 24 * u,
+                    width: 20 * u,
+                    height: 20 * u,
+                    borderRadius: 10 * u,
+                    backgroundColor: accent,
+                  },
                   keyframed({
                     animationKeyframes: [
                       {
-                        "0%": { transform: `translateY(${50 * u}px)` },
-                        "100%": { transform: "translateY(0px)" },
+                        "0%": {
+                          transform: `translate(${61 * u}px, ${52 * u}px) scale(1.6)`,
+                          animationTimingFunction: RISE,
+                        },
+                        "46%": {
+                          transform: `translate(${61 * u}px, 0px) scale(1.6)`,
+                        },
+                        "69%": {
+                          transform: `translate(${61 * u}px, 0px) scale(1.6)`,
+                          animationTimingFunction: SLIDE,
+                        },
+                        "100%": { transform: "translate(0px, 0px) scale(1)" },
                       },
                     ],
-                    animationDuration: "1200ms",
-                    animationDelay: "1800ms",
-                    animationTimingFunction: "cubic-bezier(.2,.7,.2,1)",
+                    animationDuration: "3900ms",
+                    animationDelay: "300ms",
                     animationFillMode: "both",
                   }),
                 ]}
-              >
-                <WordmarkArt size={size} base={base} />
-              </View>
+              />
+            </View>
+            {/* The name, whole and in front of the horizon. */}
+            <View
+              style={[
+                { position: "absolute", left: 0, top: 0 },
+                keyframed({
+                  animationKeyframes: [
+                    {
+                      "0%": {
+                        opacity: 0,
+                        transform: `translateY(${12 * u}px)`,
+                      },
+                      "100%": { opacity: 1, transform: "translateY(0px)" },
+                    },
+                  ],
+                  animationDuration: "1200ms",
+                  animationDelay: "1800ms",
+                  animationTimingFunction: "cubic-bezier(.2,.7,.2,1)",
+                  animationFillMode: "both",
+                }),
+              ]}
+            >
+              <WordmarkArt size={size} base={base} />
             </View>
           </View>
         </>
