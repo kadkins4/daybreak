@@ -9,8 +9,10 @@ before touching Expo APIs).
 - `GLOSSARY.md`: the project's language. Use these terms, and update it when
   a new term is settled.
 - `docs/adr/`: decisions that are hard to reverse, one short file each.
-- `docs/milestone-one-spec.md` and `docs/milestone-one-tickets.md`: what is
-  being built now. Work one ticket at a time and mark it done in the file.
+- `docs/journey-spec.md` and `docs/journey-tickets.md`: what is being built
+  now. Work one ticket at a time and mark it done in the file.
+- `docs/milestone-one-spec.md` and `docs/milestone-one-tickets.md`: Today
+  and Habits. Finished.
 - `docs/design.md`: how Daybreak looks and how Today is laid out. Build
   screens to this.
 - `docs/later.md`: parked ideas. Don't build these.

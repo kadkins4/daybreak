@@ -1,0 +1,3 @@
+# Journey maps use MapLibre on OpenStreetMap tiles
+
+A Journey is watched at close range, about 60 miles of ground on screen, which needs real roads, towns and coastlines. Journey draws its maps with MapLibre on OpenFreeMap's free OpenStreetMap tiles, recolored to Daybreak's sun colors, instead of a map we draw ourselves or Google Maps. A drawn map has nothing to show between cities at that zoom, and Google needs a billing account and limits restyling. The cost is that the map needs a connection, draws with the graphics chip (untested on the Device), and depends on a free service with no uptime promise, which can be replaced by hosting the same tiles ourselves.

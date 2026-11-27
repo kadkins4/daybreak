@@ -50,12 +50,28 @@ The AI's proposed top three priorities for the day, plus a weekly plan, drawn fr
 ### Journeys
 
 **Journey**:
-A timed focus session presented as a trip in a chosen travel mode, with its own soundscape and visuals, logged with route, length and distance.
-_Avoid_: focus session, timer, pomodoro, flight
+A timed focus session presented as a trip in a chosen travel mode, with its own sound and visuals, logged with route, length and Miles. In airplane Mode a Journey is a flight between two airports.
+_Avoid_: focus session, timer, pomodoro
 
 **Mode**:
-The kind of travel a Journey uses. Airplane and train come first.
+The kind of travel a Journey uses. Airplane comes first, then train.
 _Avoid_: theme, vehicle
+
+**Current Airport**:
+Where the next Journey takes off from: the airport nearest the user for the first Journey, and wherever the last one landed after that.
+_Avoid_: home airport, location
+
+**Round Trip**:
+A Journey of any chosen length that flies out, turns around and lands where it started. It adds Miles and leaves the Current Airport unchanged.
+_Avoid_: custom flight, loop
+
+**Diversion**:
+A Journey ended early. It lands at the last airport passed and earns the Miles to that point.
+_Avoid_: cancel, abort
+
+**Miles**:
+The distance flown across all Journeys, kept as a running total for fun.
+_Avoid_: points, score
 
 ### Morning Drive
 
