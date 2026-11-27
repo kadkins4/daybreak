@@ -14,11 +14,17 @@ export {
   AIRPORTS,
   airportFor,
   flightMinutes,
+  flightsFrom,
+  formatFlightTime,
   headingBetween,
+  lengthWindow,
   milesBetween,
+  milesForMinutes,
   nearestAirport,
+  placeAt,
   routePoint,
   type Airport,
+  type Flight,
   type Place,
 } from "./journey";
 export {

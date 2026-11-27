@@ -27,7 +27,7 @@ Add MapLibre as a web-only component, on OpenFreeMap tiles, recolored to the sun
 
 ## Taking a flight
 
-### 4. Pick a destination
+### 4. Pick a destination (done)
 
 Airport dots and labels on the map. Tapping one shows its time and miles on a card. Tapping a crowded spot zooms in. The length picker draws a ring and highlights airports near it.
 

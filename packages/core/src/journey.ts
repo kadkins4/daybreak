@@ -107,6 +107,70 @@ export function headingBetween(from: Place, to: Place): number {
   return (degrees(Math.atan2(y, x)) + 360) % 360;
 }
 
+/**
+ * How far a flight of a given length goes, in miles. The opposite of
+ * `flightMinutes`. Lengths too short to leave the climb give zero.
+ */
+export function milesForMinutes(minutes: number): number {
+  return Math.max(0, ((minutes - CLIMB_AND_DESCENT_MINUTES) / 60) * CRUISE_MPH);
+}
+
+/** A flight length in words, e.g. "23 min" or "1 h 5 min". */
+export function formatFlightTime(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const rest = minutes % 60;
+  if (hours === 0) return `${rest} min`;
+  return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`;
+}
+
+/** The place reached by going a number of miles from a place on a heading. */
+export function placeAt(from: Place, heading: number, miles: number): Place {
+  const arc = miles / EARTH_MILES;
+  const lat1 = radians(from.latitude);
+  const lon1 = radians(from.longitude);
+  const bearing = radians(heading);
+  const lat2 = Math.asin(
+    Math.sin(lat1) * Math.cos(arc) +
+      Math.cos(lat1) * Math.sin(arc) * Math.cos(bearing)
+  );
+  const lon2 =
+    lon1 +
+    Math.atan2(
+      Math.sin(bearing) * Math.sin(arc) * Math.cos(lat1),
+      Math.cos(arc) - Math.sin(lat1) * Math.sin(lat2)
+    );
+  return {
+    latitude: degrees(lat2),
+    longitude: ((degrees(lon2) + 540) % 360) - 180,
+  };
+}
+
+/** A flight that can be taken from the Current Airport. */
+export interface Flight {
+  to: Airport;
+  miles: number;
+  minutes: number;
+}
+
+/** Every flight from an airport, shortest first. */
+export function flightsFrom(origin: Airport): Flight[] {
+  return AIRPORTS.filter((airport) => airport.code !== origin.code)
+    .map((to) => {
+      const miles = milesBetween(origin, to);
+      return { to, miles, minutes: flightMinutes(miles) };
+    })
+    .sort((a, b) => a.miles - b.miles);
+}
+
+/**
+ * The shortest and longest flights that count as "about" a chosen length:
+ * within three minutes, or eight percent for long flights.
+ */
+export function lengthWindow(minutes: number): { low: number; high: number } {
+  const slack = Math.max(3, Math.round(minutes * 0.08));
+  return { low: minutes - slack, high: minutes + slack };
+}
+
 /** The airport closest to a place. */
 export function nearestAirport(place: Place): Airport {
   let best = AIRPORTS[0];

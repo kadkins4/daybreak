@@ -3,7 +3,12 @@ import {
   AIRPORTS,
   airportFor,
   flightMinutes,
+  flightsFrom,
+  formatFlightTime,
   headingBetween,
+  lengthWindow,
+  milesForMinutes,
+  placeAt,
   milesBetween,
   nearestAirport,
   routePoint,
@@ -107,5 +112,59 @@ describe("nearestAirport", () => {
     expect(
       nearestAirport({ latitude: 39.2854, longitude: -76.6083 }).code
     ).toBe("BWI");
+  });
+});
+
+describe("milesForMinutes", () => {
+  it("undoes flightMinutes", () => {
+    expect(flightMinutes(milesForMinutes(45))).toBe(45);
+    expect(milesForMinutes(45)).toBeCloseTo(275, 5);
+  });
+
+  it("gives zero for a length shorter than the climb", () => {
+    expect(milesForMinutes(5)).toBe(0);
+  });
+});
+
+describe("formatFlightTime", () => {
+  it("writes minutes, hours, or both", () => {
+    expect(formatFlightTime(23)).toBe("23 min");
+    expect(formatFlightTime(120)).toBe("2 h");
+    expect(formatFlightTime(308)).toBe("5 h 8 min");
+  });
+});
+
+describe("placeAt", () => {
+  it("lands the given distance away on the given heading", () => {
+    const there = placeAt(at("SAN"), 40, 275);
+    expect(milesBetween(at("SAN"), there)).toBeCloseTo(275, 3);
+    expect(headingBetween(at("SAN"), there)).toBeCloseTo(40, 3);
+  });
+});
+
+describe("flightsFrom", () => {
+  it("lists every other airport, shortest first", () => {
+    const flights = flightsFrom(at("BWI"));
+    expect(flights.length).toBe(AIRPORTS.length - 1);
+    expect(flights[0].to.code).toBe("DCA");
+    expect(
+      flights.every(
+        (flight, i) => i === 0 || flight.miles >= flights[i - 1].miles
+      )
+    ).toBe(true);
+  });
+});
+
+describe("lengthWindow", () => {
+  it("puts Las Vegas inside a 45 minute ring from San Diego", () => {
+    const { low, high } = lengthWindow(45);
+    const vegas = flightMinutes(milesBetween(at("SAN"), at("LAS")));
+    expect(vegas).toBeGreaterThanOrEqual(low);
+    expect(vegas).toBeLessThanOrEqual(high);
+  });
+
+  it("widens for long flights", () => {
+    expect(lengthWindow(20)).toEqual({ low: 17, high: 23 });
+    expect(lengthWindow(300)).toEqual({ low: 276, high: 324 });
   });
 });
