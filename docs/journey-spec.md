@@ -51,7 +51,7 @@ Terms in capitals are defined in `GLOSSARY.md`. The decisions here came out of t
 - **Landing is automatic.** It happens when the time runs out, even if the flight is minimized or Daybreak is closed. The summary waits until he next opens Daybreak. There is no "keep going": more focus is another Journey.
 - **Pause** freezes the flight on every screen. The map stops and the sound stops. Only flying time counts toward the flight.
 - **A paused Journey ends at day rollover** (4:00 am), by the same rule as ending early. A Journey that is flying at rollover keeps flying.
-- **Ending early is a Diversion.** He lands at the last airport he has passed, meaning the most recent airport within 75 miles of the route that is behind the plane, and earns the Miles to that point on the route. If no airport is behind him yet he is back where he took off with no Miles. Ending a Round Trip early lands him where he took off with the Miles flown. Focus minutes are always kept.
+- **Ending early is a Diversion.** He lands at the last airport he has passed, meaning the most recent airport within 30 miles of the route that is behind the plane, and earns the Miles to that point on the route. If no airport is behind him yet he is back where he took off with no Miles. Ending a Round Trip early lands him where he took off with the Miles flown. Focus minutes are always kept.
 - **Ending early needs a second tap,** on a message that says where he will land and with how many Miles.
 - **One Journey at a time.**
 - **Current Airport.** The first Journey starts at the airport nearest his real location. After that it is wherever he last landed. If he does not share his location, he picks an airport by hand.

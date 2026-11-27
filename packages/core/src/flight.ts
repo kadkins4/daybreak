@@ -18,7 +18,7 @@ export const LANDING_SECONDS = 45;
 /** The shortest Round Trip. */
 export const SHORTEST_ROUND_TRIP_MINUTES = 5;
 /** How close to the route an airport must be to count as passed. */
-const DIVERSION_REACH_MILES = 75;
+const DIVERSION_REACH_MILES = 30;
 /** Speed at liftoff and touchdown, as a share of cruising speed. */
 const SLOW = 0.3;
 /** The radius of a Round Trip's U-turn. Short trips turn tighter. */
@@ -216,7 +216,7 @@ export interface Diversion {
 
 /**
  * The Diversion rule. A one-way flight lands at the last airport it has
- * passed: the one furthest along among those within 75 miles of the route
+ * passed: the one furthest along among those within 30 miles of the route
  * and behind the plane. It earns the Miles to that point. With no airport
  * behind it yet, it is back where it took off with no Miles. A Round Trip
  * lands where it took off and keeps the Miles it has flown.

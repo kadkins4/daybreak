@@ -182,6 +182,16 @@ describe("diversionAt", () => {
     }
   });
 
+  it("stays within 30 miles of the route", () => {
+    // Up the coast from San Diego, Palm Springs and Ontario are inland.
+    const coast = oneWay("SAN", "BUR");
+    for (let miles = 0; miles < coast.plannedMiles; miles += 5) {
+      const code = diversionAt(coast, miles).airport.code;
+      expect(["PSP", "ONT"]).not.toContain(code);
+    }
+    expect(diversionAt(coast, 60).airport.code).toBe("CLD");
+  });
+
   it("lands a Round Trip where it took off, with the Miles flown", () => {
     const landing = diversionAt(roundTrip("SAN", 45), 61.5);
     expect(landing.airport.code).toBe("SAN");
