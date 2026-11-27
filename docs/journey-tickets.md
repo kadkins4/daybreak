@@ -4,7 +4,7 @@ Thirteen tickets that build `docs/journey-spec.md`. Each one is a thin slice tha
 
 ## Foundation
 
-### 1. Airports and flight maths
+### 1. Airports and flight maths (done)
 
 In the shared package: the airport list, built by a script from the OurAirports data (lower 48, scheduled airline service). Functions for distance, flight time, a point and a heading along the route, and the nearest airport to a location. Record the final airport count in the spec.
 

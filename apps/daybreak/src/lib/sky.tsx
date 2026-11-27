@@ -24,9 +24,9 @@ interface Sky {
   /** Daybreak's day, which changes at 4:00 am. */
   today: DayKey;
   weather: DayWeather | null;
-  /** True when the weather is for the fallback place, not where she is. */
+  /** True when the weather is for the fallback place, not where he is. */
   weatherIsFallback: boolean;
-  /** Ask the browser for her position again. */
+  /** Ask the browser for his position again. */
   locate: () => void;
   sun: SunTimes;
   night: boolean;

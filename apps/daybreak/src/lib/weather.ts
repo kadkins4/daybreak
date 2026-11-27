@@ -16,7 +16,7 @@ const round2 = (value: number) => Math.round(value * 100) / 100;
 
 type Position = { latitude: number; longitude: number };
 
-/** Her current position, or null when the browser does not share it. */
+/** His current position, or null when the browser does not share it. */
 async function currentPosition(): Promise<Position | null> {
   // On the web, ask the browser directly. That is what makes it show its
   // own "allow location" prompt.
@@ -78,14 +78,14 @@ async function placeName(position: Position): Promise<string | null> {
 }
 
 /**
- * The weather for a calendar date where she is, falling back to the place in
+ * The weather for a calendar date where he is, falling back to the place in
  * Settings when location is denied. Null until it has loaded.
  */
 export function useWeather(date: string): {
   weather: DayWeather | null;
-  /** True when the weather is for the fallback place, not where she is. */
+  /** True when the weather is for the fallback place, not where he is. */
   fallback: boolean;
-  /** Ask for her position again, for example after a tap. */
+  /** Ask for his position again, for example after a tap. */
   locate: () => void;
 } {
   const [weather, setWeather] = useState<DayWeather | null>(null);
@@ -125,7 +125,7 @@ export function useWeather(date: string): {
         setFallback(saved.where === "fallback");
       }
 
-      // Asking for her position can wait on a browser prompt, so show the
+      // Asking for his position can wait on a browser prompt, so show the
       // fallback place first and switch once the position arrives.
       const locating = currentPosition();
       if (!saved) await load("fallback", null);

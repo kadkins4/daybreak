@@ -9,7 +9,7 @@ Terms in capitals are defined in `GLOSSARY.md`. The decisions here came out of t
 ## In scope
 
 - One Mode: airplane.
-- Airports in the lower 48 states that have scheduled airline service.
+- Airports in the lower 48 states that have scheduled airline service: 442 of them.
 - A map for picking a destination and a close map for watching the flight.
 - A ticket, takeoff, the flight, landing, pause and ending early.
 - Round Trips of any length.

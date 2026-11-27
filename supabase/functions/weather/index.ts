@@ -78,7 +78,7 @@ Deno.serve(async (request) => {
     place = settings?.fallback_place ?? "San Diego";
   }
   // Two decimals is about a kilometre: close enough for weather, and it
-  // keeps her exact position out of the cache and out of the lookups.
+  // keeps his exact position out of the cache and out of the lookups.
   latitude = round2(latitude);
   longitude = round2(longitude);
 

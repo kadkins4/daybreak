@@ -2,7 +2,7 @@
 
 How Daybreak looks and how Today is laid out. Build to this.
 
-The visual reference is a Claude design canvas (private to Kendall):
+The visual reference is a Claude design canvas (private to Kenny):
 https://claude.ai/artifact/Sj9jTyP6V55THKCPcizVQ8
 
 The boards that count are **G** and **H** (Device and web), the four

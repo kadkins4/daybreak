@@ -13,9 +13,9 @@ One repo with the React Native app (web output on), a shared logic package, Type
 
 ### 2. Put it on a web address (done)
 
-Deploy the web output so it opens on a phone browser, redeploying on every push to main. Host on Vercel as its own Vercel project, the same way Kendall's other portfolio projects are set up. `vercel.json` already has the build settings.
+Deploy the web output so it opens on a phone browser, redeploying on every push to main. Host on Vercel as its own Vercel project, the same way Kenny's other portfolio projects are set up. `vercel.json` already has the build settings.
 
-- **Done when:** the Today page from ticket 1 loads on Kendall's phone from a real address.
+- **Done when:** the Today page from ticket 1 loads on Kenny's phone from a real address.
 - **Blocked by:** 1.
 
 ### 3. Supabase project and tables (done)
@@ -27,9 +27,9 @@ Create the project and the three tables from the spec (Habit, Habit entry, Setti
 
 ### 4. Sign in with a password (done)
 
-A sign-in screen, a session that lasts until she signs out, and a redirect to sign-in when signed out. This adds the second screen, so set up Expo Router here.
+A sign-in screen, a session that lasts until he signs out, and a redirect to sign-in when signed out. This adds the second screen, so set up Expo Router here.
 
-- **Done when:** she signs in once on laptop and phone and is still signed in after closing the browser.
+- **Done when:** he signs in once on laptop and phone and is still signed in after closing the browser.
 - **Blocked by:** 2, 3.
 
 ## Habits
@@ -43,7 +43,7 @@ In the shared package: given a moment and a time zone, return which day it belon
 
 ### 6. Show Habits and tap to complete (done)
 
-Today lists her Habits from the database. Tapping a complete-type Habit marks it done for the day, and tapping again undoes it. Seed the four day-one Habits.
+Today lists his Habits from the database. Tapping a complete-type Habit marks it done for the day, and tapping again undoes it. Seed the four day-one Habits.
 
 - **Done when:** a tap survives a page refresh, and the list resets after rollover.
 - **Blocked by:** 4, 5.
@@ -94,9 +94,9 @@ Taps made without a connection are kept and sent when the connection returns. Th
 
 ### 13. Weather (done)
 
-A backend function fetches the day's conditions, current temperature, high, low, sunrise and sunset from Open-Meteo, cached for the day. The town name is looked up in the app from OpenStreetMap, which turns away hosted servers. It uses her current location when the browser shares it and falls back to San Diego. Open-Meteo's free tier is for non-commercial use only (see `docs/later.md`).
+A backend function fetches the day's conditions, current temperature, high, low, sunrise and sunset from Open-Meteo, cached for the day. The town name is looked up in the app from OpenStreetMap, which turns away hosted servers. It uses his current location when the browser shares it and falls back to San Diego. Open-Meteo's free tier is for non-commercial use only (see `docs/later.md`).
 
-- **Done when:** Today shows the weather for where she is, and shows San Diego's when location is denied.
+- **Done when:** Today shows the weather for where he is, and shows San Diego's when location is denied.
 - **Blocked by:** 4. Can run alongside 5 to 12.
 
 ### 14. Today layout (done)
@@ -129,4 +129,4 @@ Once Today has its real look, rewrite the README to match: screenshots of Today 
 
 ## Then
 
-Use it for seven days in a row. That is the spec's finish line, and what she notices in that week shapes milestone two.
+Use it for seven days in a row. That is the spec's finish line, and what he notices in that week shapes milestone two.

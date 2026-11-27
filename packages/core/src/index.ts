@@ -11,6 +11,17 @@ export {
   type DayKey,
 } from "./day";
 export {
+  AIRPORTS,
+  airportFor,
+  flightMinutes,
+  headingBetween,
+  milesBetween,
+  nearestAirport,
+  routePoint,
+  type Airport,
+  type Place,
+} from "./journey";
+export {
   countAfterLongPress,
   countAfterTap,
   currentStreak,
