@@ -11,7 +11,7 @@ In the shared package: the airport list, built by a script from the OurAirports 
 - **Done when:** tests pass for Baltimore to Philadelphia (23 minutes), a coast-to-coast flight, and the nearest airport to downtown San Diego.
 - **Blocked by:** nothing.
 
-### 2. Journeys in the database
+### 2. Journeys in the database (done)
 
 A Journey table and a Current Airport setting, each row locked to its owner, as migration files. Journey changes arrive live on other screens.
 
